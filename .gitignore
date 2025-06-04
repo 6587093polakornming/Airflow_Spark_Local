@@ -1,0 +1,3 @@
+*.log
+/volumes/airflow/dags/__pycache__
+volumes/airflow/logs/scheduler/latest
