@@ -3,7 +3,7 @@ from datetime import datetime
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 
 default_args = {
-    'owner': 'airflow',
+    'owner': 'Polakorn Anantapakorn',
     'start_date': datetime(2025, 1, 1),
 }
 

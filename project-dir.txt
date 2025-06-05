@@ -1,13 +1,14 @@
-your-project/
+dir-project/
 ├── docker-compose.yml
 ├── Dockerfile                  # for your custom Airflow build
 ├── requirements.txt            # (if used by Dockerfile)
-└── volumes/
-    ├── airflow/
-    │   ├── dags/
-    │   ├── logs/
-    │   └── plugins/
-    ├── spark/
-    │   ├── app/
-    │   └── resources/
-    └── postgres/
+├── .env
+├── airflow/
+│   ├── dags/
+|   ├── data/
+│   ├── logs/
+|   ├── config/
+│   └── plugins/
+├── spark/
+    ├── app/
+    └── resources/
