@@ -5,3 +5,4 @@ volumes/airflow/logs/scheduler/latest
 /airflow/dags/__pycache__
 /airflow/logs/dag_processor_manager
 /airflow/logs/scheduler
+eda/TMDB_movie_dataset_v11.csv
