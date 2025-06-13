@@ -1,0 +1,101 @@
+[2025-06-11T06:20:40.959+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-06-11T06:20:40.978+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: spark_wordcount.run_wordcount manual__2025-06-11T06:20:40.650170+00:00 [queued]>
+[2025-06-11T06:20:40.993+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: spark_wordcount.run_wordcount manual__2025-06-11T06:20:40.650170+00:00 [queued]>
+[2025-06-11T06:20:40.994+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 1
+[2025-06-11T06:20:41.011+0000] {taskinstance.py:2890} INFO - Executing <Task(SparkSubmitOperator): run_wordcount> on 2025-06-11 06:20:40.650170+00:00
+[2025-06-11T06:20:41.019+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'spark_wordcount', 'run_wordcount', 'manual__2025-06-11T06:20:40.650170+00:00', '--job-id', '2', '--raw', '--subdir', 'DAGS_FOLDER/test_spark.py', '--cfg-path', '/tmp/tmpn9a_awbe']
+[2025-06-11T06:20:41.022+0000] {standard_task_runner.py:105} INFO - Job 2: Subtask run_wordcount
+[2025-06-11T06:20:41.023+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=211) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2025-06-11T06:20:41.024+0000] {standard_task_runner.py:72} INFO - Started process 212 to run task
+[2025-06-11T06:20:41.069+0000] {task_command.py:467} INFO - Running <TaskInstance: spark_wordcount.run_wordcount manual__2025-06-11T06:20:40.650170+00:00 [running]> on host 27f29130bd00
+[2025-06-11T06:20:41.150+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='Polakorn Anantapakorn' AIRFLOW_CTX_DAG_ID='spark_wordcount' AIRFLOW_CTX_TASK_ID='run_wordcount' AIRFLOW_CTX_EXECUTION_DATE='2025-06-11T06:20:40.650170+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-06-11T06:20:40.650170+00:00'
+[2025-06-11T06:20:41.151+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2025-06-11T06:20:41.203+0000] {spark_submit.py:223} INFO - Could not load connection string spark_default, defaulting to yarn
+[2025-06-11T06:20:41.204+0000] {spark_submit.py:351} INFO - Spark-Submit cmd: spark-submit --master yarn --name arrow-spark --verbose /opt/bitnami/spark/app/wordcount.py
+[2025-06-11T06:20:43.025+0000] {spark_submit.py:521} INFO - Using properties file: null
+[2025-06-11T06:20:43.142+0000] {spark_submit.py:521} INFO - Exception in thread "main" org.apache.spark.SparkException: When running with master 'yarn' either HADOOP_CONF_DIR or YARN_CONF_DIR must be set in the environment.
+[2025-06-11T06:20:43.143+0000] {spark_submit.py:521} INFO - at org.apache.spark.deploy.SparkSubmitArguments.error(SparkSubmitArguments.scala:650)
+[2025-06-11T06:20:43.144+0000] {spark_submit.py:521} INFO - at org.apache.spark.deploy.SparkSubmitArguments.validateSubmitArguments(SparkSubmitArguments.scala:281)
+[2025-06-11T06:20:43.144+0000] {spark_submit.py:521} INFO - at org.apache.spark.deploy.SparkSubmitArguments.validateArguments(SparkSubmitArguments.scala:237)
+[2025-06-11T06:20:43.144+0000] {spark_submit.py:521} INFO - at org.apache.spark.deploy.SparkSubmitArguments.<init>(SparkSubmitArguments.scala:122)
+[2025-06-11T06:20:43.144+0000] {spark_submit.py:521} INFO - at org.apache.spark.deploy.SparkSubmit$$anon$2$$anon$3.<init>(SparkSubmit.scala:1103)
+[2025-06-11T06:20:43.145+0000] {spark_submit.py:521} INFO - at org.apache.spark.deploy.SparkSubmit$$anon$2.parseArguments(SparkSubmit.scala:1103)
+[2025-06-11T06:20:43.145+0000] {spark_submit.py:521} INFO - at org.apache.spark.deploy.SparkSubmit.doSubmit(SparkSubmit.scala:86)
+[2025-06-11T06:20:43.145+0000] {spark_submit.py:521} INFO - at org.apache.spark.deploy.SparkSubmit$$anon$2.doSubmit(SparkSubmit.scala:1120)
+[2025-06-11T06:20:43.145+0000] {spark_submit.py:521} INFO - at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:1129)
+[2025-06-11T06:20:43.146+0000] {spark_submit.py:521} INFO - at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+[2025-06-11T06:20:43.170+0000] {taskinstance.py:3313} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 768, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 734, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/apache/spark/operators/spark_submit.py", line 156, in execute
+    self._hook.submit(self._application)
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 452, in submit
+    raise AirflowException(
+airflow.exceptions.AirflowException: Cannot execute: spark-submit --master yarn --name arrow-spark --verbose /opt/bitnami/spark/app/wordcount.py. Error code is: 1.
+[2025-06-11T06:20:43.177+0000] {taskinstance.py:1226} INFO - Marking task as FAILED. dag_id=spark_wordcount, task_id=run_wordcount, run_id=manual__2025-06-11T06:20:40.650170+00:00, execution_date=20250611T062040, start_date=20250611T062040, end_date=20250611T062043
+[2025-06-11T06:20:43.203+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2025-06-11T06:20:43.204+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 2 for task run_wordcount (Cannot execute: spark-submit --master yarn --name arrow-spark --verbose /opt/bitnami/spark/app/wordcount.py. Error code is: 1.; 212)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/cli.py", line 116, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3006, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 274, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3161, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3185, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 768, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 734, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/apache/spark/operators/spark_submit.py", line 156, in execute
+    self._hook.submit(self._application)
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 452, in submit
+    raise AirflowException(
+airflow.exceptions.AirflowException: Cannot execute: spark-submit --master yarn --name arrow-spark --verbose /opt/bitnami/spark/app/wordcount.py. Error code is: 1.
+[2025-06-11T06:20:43.231+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2025-06-11T06:20:43.249+0000] {taskinstance.py:3901} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-06-11T06:20:43.251+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

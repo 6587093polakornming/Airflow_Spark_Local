@@ -1,8 +1,8 @@
 /volumes/airflow/dags/__pycache__
 volumes/airflow/logs/scheduler/latest
+/volumes/airflow/logs/dag_id=spark_wordcount
 /volumes/airflow/logs/dag_processor_manager
 /volumes/airflow/logs/scheduler
-/airflow/dags/__pycache__
-/airflow/logs/dag_processor_manager
 /airflow/logs/scheduler
+/airflow/logs/dag_processor_manager
 eda/TMDB_movie_dataset_v11.csv

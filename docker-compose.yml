@@ -192,6 +192,20 @@ services:
       - default_network
     restart: always
 
+  jupyterlab:
+    image: jupyter/pyspark-notebook:spark-3.5.0
+    container_name: jupyterlab
+    ports:
+      - "8888:8888"
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+    volumes:
+      - ${SPARK_PROJ_DIR:-spark}/resources:/home/jovyan/work
+    networks:
+      - default_network
+    depends_on:
+      - spark-master
+
 networks:
   default_network:
     name: docker_net
