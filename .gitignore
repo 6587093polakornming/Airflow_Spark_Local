@@ -8,3 +8,5 @@ volumes/airflow/logs/scheduler/latest
 eda/TMDB_movie_dataset_v11.csv
 /spark/resources/credential/key.json
 /spark/resources/credential
+/airflow/logs/dag_id=spark_read_from_bigquery
+/airflow/logs/dag_id=spark_write_to_bigquery
