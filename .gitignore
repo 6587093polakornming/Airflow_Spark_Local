@@ -7,3 +7,4 @@ volumes/airflow/logs/scheduler/latest
 /airflow/logs/dag_processor_manager
 eda/TMDB_movie_dataset_v11.csv
 /spark/resources/credential/key.json
+/spark/resources/credential

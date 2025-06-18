@@ -1,0 +1,260 @@
+[2025-06-18T03:05:14.771+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-06-18T03:05:14.788+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: spark_read_from_bigquery.read_bq manual__2025-06-18T03:05:14.522054+00:00 [queued]>
+[2025-06-18T03:05:14.800+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: spark_read_from_bigquery.read_bq manual__2025-06-18T03:05:14.522054+00:00 [queued]>
+[2025-06-18T03:05:14.800+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 1
+[2025-06-18T03:05:14.816+0000] {taskinstance.py:2890} INFO - Executing <Task(SparkSubmitOperator): read_bq> on 2025-06-18 03:05:14.522054+00:00
+[2025-06-18T03:05:14.823+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'spark_read_from_bigquery', 'read_bq', 'manual__2025-06-18T03:05:14.522054+00:00', '--job-id', '5', '--raw', '--subdir', 'DAGS_FOLDER/test_scipt/test_read_bq.py', '--cfg-path', '/tmp/tmpuenr9l33']
+[2025-06-18T03:05:14.825+0000] {standard_task_runner.py:105} INFO - Job 5: Subtask read_bq
+[2025-06-18T03:05:14.826+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=2595) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2025-06-18T03:05:14.827+0000] {standard_task_runner.py:72} INFO - Started process 2596 to run task
+[2025-06-18T03:05:14.869+0000] {task_command.py:467} INFO - Running <TaskInstance: spark_read_from_bigquery.read_bq manual__2025-06-18T03:05:14.522054+00:00 [running]> on host 9a450f683bb5
+[2025-06-18T03:05:14.951+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='you' AIRFLOW_CTX_DAG_ID='spark_read_from_bigquery' AIRFLOW_CTX_TASK_ID='read_bq' AIRFLOW_CTX_EXECUTION_DATE='2025-06-18T03:05:14.522054+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-06-18T03:05:14.522054+00:00'
+[2025-06-18T03:05:14.952+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2025-06-18T03:05:14.979+0000] {base.py:84} INFO - Retrieving connection 'spark_default'
+[2025-06-18T03:05:14.981+0000] {spark_submit.py:351} INFO - Spark-Submit cmd: spark-submit --master spark://spark-master:7077 --packages com.google.cloud.spark:spark-bigquery-with-dependencies_2.12:0.42.2 --name spark_read_bq_job /opt/bitnami/spark/app/read_data_bq.py
+[2025-06-18T03:05:16.268+0000] {spark_submit.py:521} INFO - :: loading settings :: url = jar:file:/opt/spark/jars/ivy-2.5.1.jar!/org/apache/ivy/core/settings/ivysettings.xml
+[2025-06-18T03:05:16.342+0000] {spark_submit.py:521} INFO - Ivy Default Cache set to: /home/***/.ivy2/cache
+[2025-06-18T03:05:16.343+0000] {spark_submit.py:521} INFO - The jars for the packages stored in: /home/***/.ivy2/jars
+[2025-06-18T03:05:16.346+0000] {spark_submit.py:521} INFO - com.google.cloud.spark#spark-bigquery-with-dependencies_2.12 added as a dependency
+[2025-06-18T03:05:16.347+0000] {spark_submit.py:521} INFO - :: resolving dependencies :: org.apache.spark#spark-submit-parent-06c608bf-69e3-44aa-903f-5d657ce3478f;1.0
+[2025-06-18T03:05:16.348+0000] {spark_submit.py:521} INFO - confs: [default]
+[2025-06-18T03:05:16.471+0000] {spark_submit.py:521} INFO - found com.google.cloud.spark#spark-bigquery-with-dependencies_2.12;0.42.2 in central
+[2025-06-18T03:05:16.485+0000] {spark_submit.py:521} INFO - :: resolution report :: resolve 134ms :: artifacts dl 4ms
+[2025-06-18T03:05:16.486+0000] {spark_submit.py:521} INFO - :: modules in use:
+[2025-06-18T03:05:16.486+0000] {spark_submit.py:521} INFO - com.google.cloud.spark#spark-bigquery-with-dependencies_2.12;0.42.2 from central in [default]
+[2025-06-18T03:05:16.487+0000] {spark_submit.py:521} INFO - ---------------------------------------------------------------------
+[2025-06-18T03:05:16.487+0000] {spark_submit.py:521} INFO - |                  |            modules            ||   artifacts   |
+[2025-06-18T03:05:16.487+0000] {spark_submit.py:521} INFO - |       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+[2025-06-18T03:05:16.488+0000] {spark_submit.py:521} INFO - ---------------------------------------------------------------------
+[2025-06-18T03:05:16.488+0000] {spark_submit.py:521} INFO - |      default     |   1   |   0   |   0   |   0   ||   1   |   0   |
+[2025-06-18T03:05:16.488+0000] {spark_submit.py:521} INFO - ---------------------------------------------------------------------
+[2025-06-18T03:05:16.489+0000] {spark_submit.py:521} INFO - :: retrieving :: org.apache.spark#spark-submit-parent-06c608bf-69e3-44aa-903f-5d657ce3478f
+[2025-06-18T03:05:16.489+0000] {spark_submit.py:521} INFO - confs: [default]
+[2025-06-18T03:05:16.493+0000] {spark_submit.py:521} INFO - 0 artifacts copied, 1 already retrieved (0kB/4ms)
+[2025-06-18T03:05:16.656+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:16 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[2025-06-18T03:05:18.192+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SparkContext: Running Spark version 3.5.2
+[2025-06-18T03:05:18.192+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SparkContext: OS info Linux, 5.15.146.1-microsoft-standard-WSL2, amd64
+[2025-06-18T03:05:18.193+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SparkContext: Java version 17.0.15
+[2025-06-18T03:05:18.212+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO ResourceUtils: ==============================================================
+[2025-06-18T03:05:18.213+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO ResourceUtils: No custom resources configured for spark.driver.
+[2025-06-18T03:05:18.213+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO ResourceUtils: ==============================================================
+[2025-06-18T03:05:18.214+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SparkContext: Submitted application: ReadFromBigQuery
+[2025-06-18T03:05:18.231+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+[2025-06-18T03:05:18.239+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO ResourceProfile: Limiting resource is cpu
+[2025-06-18T03:05:18.239+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO ResourceProfileManager: Added ResourceProfile id: 0
+[2025-06-18T03:05:18.293+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SecurityManager: Changing view acls to: ***
+[2025-06-18T03:05:18.294+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SecurityManager: Changing modify acls to: ***
+[2025-06-18T03:05:18.295+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SecurityManager: Changing view acls groups to:
+[2025-06-18T03:05:18.295+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SecurityManager: Changing modify acls groups to:
+[2025-06-18T03:05:18.295+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: ***; groups with view permissions: EMPTY; users with modify permissions: ***; groups with modify permissions: EMPTY
+[2025-06-18T03:05:18.497+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO Utils: Successfully started service 'sparkDriver' on port 46581.
+[2025-06-18T03:05:18.526+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SparkEnv: Registering MapOutputTracker
+[2025-06-18T03:05:18.572+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SparkEnv: Registering BlockManagerMaster
+[2025-06-18T03:05:18.591+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+[2025-06-18T03:05:18.592+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+[2025-06-18T03:05:18.595+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+[2025-06-18T03:05:18.613+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-d504a189-06e1-44fb-9e36-2a31d397f582
+[2025-06-18T03:05:18.627+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+[2025-06-18T03:05:18.641+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SparkEnv: Registering OutputCommitCoordinator
+[2025-06-18T03:05:18.808+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+[2025-06-18T03:05:18.878+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+[2025-06-18T03:05:18.915+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SparkContext: Added JAR file:///home/***/.ivy2/jars/com.google.cloud.spark_spark-bigquery-with-dependencies_2.12-0.42.2.jar at spark://9a450f683bb5:46581/jars/com.google.cloud.spark_spark-bigquery-with-dependencies_2.12-0.42.2.jar with timestamp 1750215918183
+[2025-06-18T03:05:18.918+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO SparkContext: Added file file:///home/***/.ivy2/jars/com.google.cloud.spark_spark-bigquery-with-dependencies_2.12-0.42.2.jar at spark://9a450f683bb5:46581/files/com.google.cloud.spark_spark-bigquery-with-dependencies_2.12-0.42.2.jar with timestamp 1750215918183
+[2025-06-18T03:05:18.920+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:18 INFO Utils: Copying /home/***/.ivy2/jars/com.google.cloud.spark_spark-bigquery-with-dependencies_2.12-0.42.2.jar to /tmp/spark-ca31a993-2cd8-47e2-a4d2-0139a1eca9dd/userFiles-66301233-eeef-443c-b121-45c985e50ce4/com.google.cloud.spark_spark-bigquery-with-dependencies_2.12-0.42.2.jar
+[2025-06-18T03:05:19.061+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+[2025-06-18T03:05:19.101+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO TransportClientFactory: Successfully created connection to spark-master/172.18.0.4:7077 after 22 ms (0 ms spent in bootstraps)
+[2025-06-18T03:05:19.183+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20250618030519-0008
+[2025-06-18T03:05:19.185+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20250618030519-0008/0 on worker-20250618015902-172.18.0.2-42529 (172.18.0.2:42529) with 2 core(s)
+[2025-06-18T03:05:19.188+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO StandaloneSchedulerBackend: Granted executor ID app-20250618030519-0008/0 on hostPort 172.18.0.2:42529 with 2 core(s), 1024.0 MiB RAM
+[2025-06-18T03:05:19.193+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 40329.
+[2025-06-18T03:05:19.194+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO NettyBlockTransferService: Server created on 9a450f683bb5:40329
+[2025-06-18T03:05:19.197+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+[2025-06-18T03:05:19.205+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 9a450f683bb5, 40329, None)
+[2025-06-18T03:05:19.208+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO BlockManagerMasterEndpoint: Registering block manager 9a450f683bb5:40329 with 434.4 MiB RAM, BlockManagerId(driver, 9a450f683bb5, 40329, None)
+[2025-06-18T03:05:19.210+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 9a450f683bb5, 40329, None)
+[2025-06-18T03:05:19.212+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 9a450f683bb5, 40329, None)
+[2025-06-18T03:05:19.235+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20250618030519-0008/0 is now RUNNING
+[2025-06-18T03:05:19.387+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+[2025-06-18T03:05:19.577+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO SharedState: Setting hive.metastore.warehouse.dir ('null') to the value of spark.sql.warehouse.dir.
+[2025-06-18T03:05:19.579+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:19 INFO SharedState: Warehouse path is 'file:/opt/***/spark-warehouse'.
+[2025-06-18T03:05:20.555+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:20 INFO SparkBigQueryConnectorModule: Registering cleanup jobs listener, should happen just once
+[2025-06-18T03:05:21.257+0000] {spark_submit.py:521} INFO - Traceback (most recent call last):
+[2025-06-18T03:05:21.258+0000] {spark_submit.py:521} INFO - File "/opt/bitnami/spark/app/read_data_bq.py", line 17, in <module>
+[2025-06-18T03:05:21.260+0000] {spark_submit.py:521} INFO - .load()
+[2025-06-18T03:05:21.260+0000] {spark_submit.py:521} INFO - ^^^^^^
+[2025-06-18T03:05:21.261+0000] {spark_submit.py:521} INFO - File "/opt/spark/python/lib/pyspark.zip/pyspark/sql/readwriter.py", line 314, in load
+[2025-06-18T03:05:21.261+0000] {spark_submit.py:521} INFO - File "/opt/spark/python/lib/py4j-0.10.9.7-src.zip/py4j/java_gateway.py", line 1322, in __call__
+[2025-06-18T03:05:21.261+0000] {spark_submit.py:521} INFO - File "/opt/spark/python/lib/pyspark.zip/pyspark/errors/exceptions/captured.py", line 179, in deco
+[2025-06-18T03:05:21.262+0000] {spark_submit.py:521} INFO - File "/opt/spark/python/lib/py4j-0.10.9.7-src.zip/py4j/protocol.py", line 326, in get_return_value
+[2025-06-18T03:05:21.264+0000] {spark_submit.py:521} INFO - py4j.protocol.Py4JJavaError: An error occurred while calling o33.load.
+[2025-06-18T03:05:21.264+0000] {spark_submit.py:521} INFO - : com.google.cloud.spark.bigquery.repackaged.com.google.inject.ProvisionException: Unable to provision, see the following errors:
+[2025-06-18T03:05:21.265+0000] {spark_submit.py:521} INFO - 
+[2025-06-18T03:05:21.265+0000] {spark_submit.py:521} INFO - 1) [Guice/ErrorInCustomProvider]: UncheckedIOException: Failed to create default Credentials
+[2025-06-18T03:05:21.266+0000] {spark_submit.py:521} INFO - at BigQueryClientModule.provideBigQueryCredentialsSupplier(BigQueryClientModule.java:61)
+[2025-06-18T03:05:21.266+0000] {spark_submit.py:521} INFO - at BigQueryClientModule.provideBigQueryClient(BigQueryClientModule.java:106)
+[2025-06-18T03:05:21.266+0000] {spark_submit.py:521} INFO - \_ for 3rd parameter
+[2025-06-18T03:05:21.267+0000] {spark_submit.py:521} INFO - at BigQueryClientModule.provideBigQueryClient(BigQueryClientModule.java:106)
+[2025-06-18T03:05:21.267+0000] {spark_submit.py:521} INFO - while locating BigQueryClient
+[2025-06-18T03:05:21.267+0000] {spark_submit.py:521} INFO - 
+[2025-06-18T03:05:21.268+0000] {spark_submit.py:521} INFO - Learn more:
+[2025-06-18T03:05:21.268+0000] {spark_submit.py:521} INFO - https://github.com/google/guice/wiki/ERROR_IN_CUSTOM_PROVIDER
+[2025-06-18T03:05:21.268+0000] {spark_submit.py:521} INFO - 
+[2025-06-18T03:05:21.269+0000] {spark_submit.py:521} INFO - 1 error
+[2025-06-18T03:05:21.269+0000] {spark_submit.py:521} INFO - 
+[2025-06-18T03:05:21.269+0000] {spark_submit.py:521} INFO - ======================
+[2025-06-18T03:05:21.270+0000] {spark_submit.py:521} INFO - Full classname legend:
+[2025-06-18T03:05:21.270+0000] {spark_submit.py:521} INFO - ======================
+[2025-06-18T03:05:21.270+0000] {spark_submit.py:521} INFO - BigQueryClient:       "com.google.cloud.bigquery.connector.common.BigQueryClient"
+[2025-06-18T03:05:21.271+0000] {spark_submit.py:521} INFO - BigQueryClientModule: "com.google.cloud.bigquery.connector.common.BigQueryClientModule"
+[2025-06-18T03:05:21.271+0000] {spark_submit.py:521} INFO - UncheckedIOException: "java.io.UncheckedIOException"
+[2025-06-18T03:05:21.272+0000] {spark_submit.py:521} INFO - ========================
+[2025-06-18T03:05:21.272+0000] {spark_submit.py:521} INFO - End of classname legend:
+[2025-06-18T03:05:21.272+0000] {spark_submit.py:521} INFO - ========================
+[2025-06-18T03:05:21.272+0000] {spark_submit.py:521} INFO - 
+[2025-06-18T03:05:21.273+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.InternalProvisionException.toProvisionException(InternalProvisionException.java:251)
+[2025-06-18T03:05:21.273+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.InjectorImpl$1.get(InjectorImpl.java:1104)
+[2025-06-18T03:05:21.273+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.InjectorImpl.getInstance(InjectorImpl.java:1139)
+[2025-06-18T03:05:21.274+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.BigQueryRelationProvider.createRelationInternal(BigQueryRelationProvider.scala:76)
+[2025-06-18T03:05:21.274+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.BigQueryRelationProvider.createRelation(BigQueryRelationProvider.scala:46)
+[2025-06-18T03:05:21.274+0000] {spark_submit.py:521} INFO - at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:346)
+[2025-06-18T03:05:21.275+0000] {spark_submit.py:521} INFO - at org.apache.spark.sql.DataFrameReader.loadV1Source(DataFrameReader.scala:229)
+[2025-06-18T03:05:21.275+0000] {spark_submit.py:521} INFO - at org.apache.spark.sql.DataFrameReader.$anonfun$load$2(DataFrameReader.scala:211)
+[2025-06-18T03:05:21.275+0000] {spark_submit.py:521} INFO - at scala.Option.getOrElse(Option.scala:189)
+[2025-06-18T03:05:21.276+0000] {spark_submit.py:521} INFO - at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:211)
+[2025-06-18T03:05:21.276+0000] {spark_submit.py:521} INFO - at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:172)
+[2025-06-18T03:05:21.276+0000] {spark_submit.py:521} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[2025-06-18T03:05:21.277+0000] {spark_submit.py:521} INFO - at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+[2025-06-18T03:05:21.277+0000] {spark_submit.py:521} INFO - at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[2025-06-18T03:05:21.277+0000] {spark_submit.py:521} INFO - at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+[2025-06-18T03:05:21.278+0000] {spark_submit.py:521} INFO - at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+[2025-06-18T03:05:21.278+0000] {spark_submit.py:521} INFO - at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:374)
+[2025-06-18T03:05:21.278+0000] {spark_submit.py:521} INFO - at py4j.Gateway.invoke(Gateway.java:282)
+[2025-06-18T03:05:21.279+0000] {spark_submit.py:521} INFO - at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+[2025-06-18T03:05:21.279+0000] {spark_submit.py:521} INFO - at py4j.commands.CallCommand.execute(CallCommand.java:79)
+[2025-06-18T03:05:21.279+0000] {spark_submit.py:521} INFO - at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:182)
+[2025-06-18T03:05:21.279+0000] {spark_submit.py:521} INFO - at py4j.ClientServerConnection.run(ClientServerConnection.java:106)
+[2025-06-18T03:05:21.280+0000] {spark_submit.py:521} INFO - at java.base/java.lang.Thread.run(Thread.java:840)
+[2025-06-18T03:05:21.280+0000] {spark_submit.py:521} INFO - Caused by: java.io.UncheckedIOException: Failed to create default Credentials
+[2025-06-18T03:05:21.280+0000] {spark_submit.py:521} INFO - at com.google.cloud.bigquery.connector.common.BigQueryCredentialsSupplier.createDefaultCredentials(BigQueryCredentialsSupplier.java:199)
+[2025-06-18T03:05:21.281+0000] {spark_submit.py:521} INFO - at com.google.cloud.bigquery.connector.common.BigQueryCredentialsSupplier.<init>(BigQueryCredentialsSupplier.java:83)
+[2025-06-18T03:05:21.282+0000] {spark_submit.py:521} INFO - at com.google.cloud.bigquery.connector.common.BigQueryClientModule.provideBigQueryCredentialsSupplier(BigQueryClientModule.java:75)
+[2025-06-18T03:05:21.282+0000] {spark_submit.py:521} INFO - at com.google.cloud.bigquery.connector.common.BigQueryClientModule$$FastClassByGuice$$334135.GUICE$TRAMPOLINE(<generated>)
+[2025-06-18T03:05:21.283+0000] {spark_submit.py:521} INFO - at com.google.cloud.bigquery.connector.common.BigQueryClientModule$$FastClassByGuice$$334135.apply(<generated>)
+[2025-06-18T03:05:21.283+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.ProviderMethod$FastClassProviderMethod.doProvision(ProviderMethod.java:260)
+[2025-06-18T03:05:21.283+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.ProviderMethod.doProvision(ProviderMethod.java:171)
+[2025-06-18T03:05:21.283+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.InternalProviderInstanceBindingImpl$CyclicFactory.provision(InternalProviderInstanceBindingImpl.java:185)
+[2025-06-18T03:05:21.284+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.InternalProviderInstanceBindingImpl$CyclicFactory.get(InternalProviderInstanceBindingImpl.java:162)
+[2025-06-18T03:05:21.284+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.ProviderToInternalFactoryAdapter.get(ProviderToInternalFactoryAdapter.java:40)
+[2025-06-18T03:05:21.284+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.SingletonScope$1.get(SingletonScope.java:169)
+[2025-06-18T03:05:21.285+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.InternalFactoryToProviderAdapter.get(InternalFactoryToProviderAdapter.java:45)
+[2025-06-18T03:05:21.285+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.SingleParameterInjector.inject(SingleParameterInjector.java:40)
+[2025-06-18T03:05:21.285+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.SingleParameterInjector.getAll(SingleParameterInjector.java:60)
+[2025-06-18T03:05:21.286+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.ProviderMethod.doProvision(ProviderMethod.java:171)
+[2025-06-18T03:05:21.286+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.InternalProviderInstanceBindingImpl$CyclicFactory.provision(InternalProviderInstanceBindingImpl.java:185)
+[2025-06-18T03:05:21.286+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.InternalProviderInstanceBindingImpl$CyclicFactory.get(InternalProviderInstanceBindingImpl.java:162)
+[2025-06-18T03:05:21.287+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.ProviderToInternalFactoryAdapter.get(ProviderToInternalFactoryAdapter.java:40)
+[2025-06-18T03:05:21.287+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.SingletonScope$1.get(SingletonScope.java:169)
+[2025-06-18T03:05:21.287+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.InternalFactoryToProviderAdapter.get(InternalFactoryToProviderAdapter.java:45)
+[2025-06-18T03:05:21.288+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.inject.internal.InjectorImpl$1.get(InjectorImpl.java:1101)
+[2025-06-18T03:05:21.288+0000] {spark_submit.py:521} INFO - ... 21 more
+[2025-06-18T03:05:21.288+0000] {spark_submit.py:521} INFO - Caused by: java.io.IOException: Your default credentials were not found. To set up Application Default Credentials for your environment, see https://cloud.google.com/docs/authentication/external/set-up-adc.
+[2025-06-18T03:05:21.289+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.auth.oauth2.DefaultCredentialsProvider.getDefaultCredentials(DefaultCredentialsProvider.java:127)
+[2025-06-18T03:05:21.289+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.auth.oauth2.GoogleCredentials.getApplicationDefault(GoogleCredentials.java:152)
+[2025-06-18T03:05:21.289+0000] {spark_submit.py:521} INFO - at com.google.cloud.spark.bigquery.repackaged.com.google.auth.oauth2.GoogleCredentials.getApplicationDefault(GoogleCredentials.java:124)
+[2025-06-18T03:05:21.290+0000] {spark_submit.py:521} INFO - at com.google.cloud.bigquery.connector.common.BigQueryCredentialsSupplier.createDefaultCredentials(BigQueryCredentialsSupplier.java:197)
+[2025-06-18T03:05:21.290+0000] {spark_submit.py:521} INFO - ... 41 more
+[2025-06-18T03:05:21.290+0000] {spark_submit.py:521} INFO - 
+[2025-06-18T03:05:21.333+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO SparkContext: Invoking stop() from shutdown hook
+[2025-06-18T03:05:21.334+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO SparkContext: SparkContext is stopping with exitCode 0.
+[2025-06-18T03:05:21.335+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO SparkBigQueryConnectorModule: In SparkListener.onApplicationEnd, going to activate cleanup jobs
+[2025-06-18T03:05:21.340+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO BigQueryClient: Running cleanup jobs. Jobs count is 0
+[2025-06-18T03:05:21.341+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO BigQueryClient: Clearing the cleanup jobs list
+[2025-06-18T03:05:21.341+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO BigQueryClient: Finished to run cleanup jobs.
+[2025-06-18T03:05:21.344+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO SparkUI: Stopped Spark web UI at http://9a450f683bb5:4040
+[2025-06-18T03:05:21.347+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO StandaloneSchedulerBackend: Shutting down all executors
+[2025-06-18T03:05:21.348+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO StandaloneSchedulerBackend$StandaloneDriverEndpoint: Asking each executor to shut down
+[2025-06-18T03:05:21.360+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+[2025-06-18T03:05:21.374+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO MemoryStore: MemoryStore cleared
+[2025-06-18T03:05:21.375+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO BlockManager: BlockManager stopped
+[2025-06-18T03:05:21.380+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO BlockManagerMaster: BlockManagerMaster stopped
+[2025-06-18T03:05:21.382+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+[2025-06-18T03:05:21.396+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO SparkContext: Successfully stopped SparkContext
+[2025-06-18T03:05:21.397+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO ShutdownHookManager: Shutdown hook called
+[2025-06-18T03:05:21.397+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO ShutdownHookManager: Deleting directory /tmp/spark-f36e30e6-f1d2-435d-941b-b837e7ca2b10
+[2025-06-18T03:05:21.401+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO ShutdownHookManager: Deleting directory /tmp/spark-ca31a993-2cd8-47e2-a4d2-0139a1eca9dd
+[2025-06-18T03:05:21.404+0000] {spark_submit.py:521} INFO - 25/06/18 03:05:21 INFO ShutdownHookManager: Deleting directory /tmp/spark-ca31a993-2cd8-47e2-a4d2-0139a1eca9dd/pyspark-01561ff4-0a2a-4ef3-9ef4-b4a8187a50ec
+[2025-06-18T03:05:21.441+0000] {taskinstance.py:3313} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 768, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 734, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/apache/spark/operators/spark_submit.py", line 156, in execute
+    self._hook.submit(self._application)
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 452, in submit
+    raise AirflowException(
+airflow.exceptions.AirflowException: Cannot execute: spark-submit --master spark://spark-master:7077 --packages com.google.cloud.spark:spark-bigquery-with-dependencies_2.12:0.42.2 --name spark_read_bq_job /opt/bitnami/spark/app/read_data_bq.py. Error code is: 1.
+[2025-06-18T03:05:21.445+0000] {taskinstance.py:1226} INFO - Marking task as FAILED. dag_id=spark_read_from_bigquery, task_id=read_bq, run_id=manual__2025-06-18T03:05:14.522054+00:00, execution_date=20250618T030514, start_date=20250618T030514, end_date=20250618T030521
+[2025-06-18T03:05:21.468+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2025-06-18T03:05:21.469+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 5 for task read_bq (Cannot execute: spark-submit --master spark://spark-master:7077 --packages com.google.cloud.spark:spark-bigquery-with-dependencies_2.12:0.42.2 --name spark_read_bq_job /opt/bitnami/spark/app/read_data_bq.py. Error code is: 1.; 2596)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/cli.py", line 116, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3006, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 274, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3161, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3185, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 768, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 734, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/apache/spark/operators/spark_submit.py", line 156, in execute
+    self._hook.submit(self._application)
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/apache/spark/hooks/spark_submit.py", line 452, in submit
+    raise AirflowException(
+airflow.exceptions.AirflowException: Cannot execute: spark-submit --master spark://spark-master:7077 --packages com.google.cloud.spark:spark-bigquery-with-dependencies_2.12:0.42.2 --name spark_read_bq_job /opt/bitnami/spark/app/read_data_bq.py. Error code is: 1.
+[2025-06-18T03:05:21.506+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2025-06-18T03:05:21.521+0000] {taskinstance.py:3901} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-06-18T03:05:21.523+0000] {local_task_job_runner.py:245} INFO - ::endgroup::
