@@ -19,5 +19,11 @@ if __name__ == "__main__":
         .load()
 
     df.show(5)  # Print up to 10 rows
+    # df.coalesce(1).write.csv('/opt/bitnami/spark/resources/output/exported_demo_data', header = True)
+    # df.write.mode("overwrite").csv('/opt/bitnami/spark/resources/output/exported_demo_data.csv', header = True)
+    # df.coalesce(1).write.mode("overwrite").csv('/opt/bitnami/spark/resources/output/exported_demo_data', header = True)
+    
+    # output_base_path = '/opt/spark/output/fact_movie_csv_export'
+    # df.coalesce(1).write.mode("overwrite").csv(output_base_path, header = True)
 
     spark.stop()

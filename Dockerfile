@@ -19,4 +19,4 @@ RUN wget -q https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-$
     rm /tmp/spark.tgz
 
 USER airflow
-RUN pip install --no-cache-dir "apache-airflow-providers-apache-spark==4.3.0"
+RUN pip install --no-cache-dir "apache-airflow-providers-apache-spark==4.3.0" "apache-airflow-providers-google" "google-cloud-bigquery"
