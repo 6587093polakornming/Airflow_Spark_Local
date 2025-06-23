@@ -19,6 +19,7 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-airflow}/config:/opt/airflow/config
     - ${SPARK_PROJ_DIR:-spark}/app:/opt/bitnami/spark/app
     - ${SPARK_PROJ_DIR:-spark}/resources:/opt/bitnami/spark/resources
+    - ${SPARK_PROJ_DIR:-spark}/output:/opt/shared/output
   depends_on:
     &airflow-common-depends-on
     postgres:
@@ -83,9 +84,12 @@ services:
     <<: *airflow-common
     entrypoint: /bin/bash
     # yamllint disable rule:line-length
+    env_file:
+      - .env
     command:
       - -c
       - |
+        echo "UID: $(id -u), GID: $(id -g)"  # Add this line to debug UID
         if [[ -z "${AIRFLOW_UID}" ]]; then
           echo
           echo -e "\033[1;33mWARNING!!!: AIRFLOW_UID not set!\e[0m"
@@ -129,12 +133,13 @@ services:
           echo
         fi
         mkdir -p /sources/airflow/{logs,dags,plugins,config,data}
-        mkdir -p /sources/spark/{app,resources}
-        chmod -R 777 /sources/spark/{app,resources}
-        chown -R "${AIRFLOW_UID}:0" /sources/airflow/{logs,dags,plugins,config,data}
-        chown -R "${AIRFLOW_UID}:0" /sources/spark/{app,resources}
+        mkdir -p /sources/spark/{app,resources,output}
+        
         exec /entrypoint airflow version
     # yamllint enable rule:line-length
+    # chmod -R 777 /sources/spark/{app,resources,output}
+    # chown -R "${AIRFLOW_UID}:0" /sources/airflow/{logs,dags,plugins,config,data}
+    # chown -R "${AIRFLOW_UID}:0" /sources/spark/{app,resources,output}
     environment:
       <<: *airflow-common-env
       _AIRFLOW_DB_MIGRATE: 'true'
@@ -142,6 +147,7 @@ services:
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
       _PIP_ADDITIONAL_REQUIREMENTS: ''
+      
     volumes:
       - ${AIRFLOW_PROJ_DIR:-airflow}:/sources/airflow
       - ${SPARK_PROJ_DIR:-spark}:/sources/spark
@@ -163,6 +169,7 @@ services:
   spark-master:
     container_name: spark-master
     image: bitnami/spark:3.5.2
+    user: "${AIRFLOW_UID}:0"
     environment:
       - SPARK_MODE=master
       - SPARK_MASTER_PORT=7077
@@ -173,6 +180,7 @@ services:
     volumes:
       - ${SPARK_PROJ_DIR:-spark}/app:/opt/bitnami/spark/app
       - ${SPARK_PROJ_DIR:-spark}/resources:/opt/bitnami/spark/resources
+      - ${SPARK_PROJ_DIR:-spark}/output:/opt/shared/output
     networks:
       - default_network
     restart: always
@@ -180,6 +188,7 @@ services:
   spark-worker-1:
     container_name: spark-worker-1
     image: bitnami/spark:3.5.2
+    user: "${AIRFLOW_UID}:0"
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -188,6 +197,7 @@ services:
     volumes:
       - ${SPARK_PROJ_DIR:-spark}/app:/opt/bitnami/spark/app
       - ${SPARK_PROJ_DIR:-spark}/resources:/opt/bitnami/spark/resources
+      - ${SPARK_PROJ_DIR:-spark}/output:/opt/shared/output
     networks:
       - default_network
     restart: always

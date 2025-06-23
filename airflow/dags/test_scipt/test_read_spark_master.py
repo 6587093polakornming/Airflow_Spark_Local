@@ -5,10 +5,9 @@ from airflow.utils.dates import days_ago
 from datetime import timedelta
 
 default_args = {'owner': 'you', 'retries': 0}
-spark_master = "spark://spark-master:7077"
 
 with DAG(
-    dag_id="spark_read_from_bigquery",
+    dag_id="spark_read_from_spark",
     default_args=default_args,
     start_date=days_ago(1),
     schedule_interval=None,
@@ -17,12 +16,11 @@ with DAG(
 ) as dag:
 
     read_bq = SparkSubmitOperator(
-        task_id="read_bq",
+        task_id="read_spark",
         application="/opt/bitnami/spark/app/read_data_bq.py",
         name="spark_read_bq_job",
         conn_id="spark_default",
         packages="com.google.cloud.spark:spark-bigquery-with-dependencies_2.12:0.42.2",
-        conf={"spark.master":spark_master}
     )
 
     read_bq
