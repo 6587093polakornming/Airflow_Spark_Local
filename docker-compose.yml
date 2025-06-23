@@ -83,6 +83,7 @@ services:
   airflow-init:
     <<: *airflow-common
     entrypoint: /bin/bash
+    user: "${AIRFLOW_UID}:0"
     # yamllint disable rule:line-length
     env_file:
       - .env
@@ -147,7 +148,7 @@ services:
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
       _PIP_ADDITIONAL_REQUIREMENTS: ''
-      
+
     volumes:
       - ${AIRFLOW_PROJ_DIR:-airflow}:/sources/airflow
       - ${SPARK_PROJ_DIR:-spark}:/sources/spark
