@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 
-READ_PATH = '/opt/bitnami/spark/output/fact_movie_csv_export'
+READ_PATH = '/opt/shared/output/fact_movie_csv_export'
 
 if __name__ == "__main__":
     spark = SparkSession.builder \

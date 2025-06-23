@@ -12,15 +12,14 @@ with DAG(
     start_date=days_ago(1),
     schedule_interval=None,
     catchup=False,
-    tags=['spark', 'bigquery'],
+    tags=['spark'],
 ) as dag:
 
     read_bq = SparkSubmitOperator(
         task_id="read_spark",
-        application="/opt/bitnami/spark/app/read_data_bq.py",
-        name="spark_read_bq_job",
+        application="/opt/bitnami/spark/app/read_data_spark.py",
+        name="spark_read_spark_job",
         conn_id="spark_default",
-        packages="com.google.cloud.spark:spark-bigquery-with-dependencies_2.12:0.42.2",
     )
 
     read_bq

@@ -12,3 +12,4 @@ eda/TMDB_movie_dataset_v11.csv
 /airflow/logs/dag_id=spark_write_to_bigquery
 /airflow/logs/dag_id=bq_to_gcs_to_local
 /airflow/dags/test_scipt/__pycache__
+/airflow/logs/dag_id=spark_read_from_spark
