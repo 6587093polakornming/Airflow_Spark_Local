@@ -13,3 +13,10 @@ eda/TMDB_movie_dataset_v11.csv
 /airflow/logs/dag_id=bq_to_gcs_to_local
 /airflow/dags/test_scipt/__pycache__
 /airflow/logs/dag_id=spark_read_from_spark
+/airflow/dags/__pycache__
+/airflow/dags/test_scipt/__pycache__
+/airflow/dags/test_scipt/__pycache__
+*.pyc
+/airflow/logs/dag_id=ETL_tmdb_dataset
+/spark/jupyter/.ipynb_checkpoints
+spark/resources/dataset/TMDB_movie_dataset_v11.csv

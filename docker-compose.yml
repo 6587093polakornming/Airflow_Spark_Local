@@ -1,6 +1,8 @@
 x-airflow-common:
   &airflow-common
-  build: .
+  build:
+      context: .
+      dockerfile: Dockerfile
   networks:
     - default_network
   environment:
@@ -204,18 +206,27 @@ services:
     restart: always
 
   jupyterlab:
-    image: jupyter/pyspark-notebook:spark-3.5.0
+    build:
+      context: .
+      dockerfile: Dockerfile.jupyter
     container_name: jupyterlab
+    user: "${AIRFLOW_UID}:0"
+    group_add:
+      - "100"
     ports:
       - "8888:8888"
     environment:
-      - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_MODE=client
+      - SPARK_MASTER_URL=spark://spark-master:7077
     volumes:
-      - ${SPARK_PROJ_DIR:-spark}/resources:/home/jovyan/work
+      - ${SPARK_PROJ_DIR:-spark}/jupyter:/home/jovyan/work
+      - ${SPARK_PROJ_DIR:-spark}/resources:/opt/bitnami/spark/resources
     networks:
       - default_network
+    command: start.sh jupyter lab --NotebookApp.allow_origin='*' --NotebookApp.token='' --NotebookApp.disable_check_xsrf=True --NotebookApp.allow_root=True
     depends_on:
       - spark-master
+      - spark-worker-1
 
 networks:
   default_network:

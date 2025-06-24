@@ -1,0 +1,25 @@
+FROM jupyter/base-notebook:python-3.11
+
+USER root
+
+# ติดตั้ง Java และเครื่องมือพื้นฐาน
+RUN apt-get update && apt-get install -y openjdk-17-jdk wget curl && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# กำหนดเวอร์ชัน
+ENV SPARK_VERSION=3.5.2
+ENV HADOOP_VERSION=3
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV SPARK_HOME=/opt/spark
+ENV PATH=$PATH:$JAVA_HOME/bin:$SPARK_HOME/bin
+
+# ดาวน์โหลด Spark
+RUN curl -fLO https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz && \
+    tar -xzf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz -C /opt/ && \
+    ln -s /opt/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} /opt/spark && \
+    rm spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
+
+# ติดตั้ง PySpark และ findspark
+RUN pip install pyspark==${SPARK_VERSION} findspark
+
+USER $NB_UID
