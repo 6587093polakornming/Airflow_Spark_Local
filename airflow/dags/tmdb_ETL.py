@@ -7,6 +7,8 @@ from airflow.operators.python import PythonOperator
 from airflow.exceptions import AirflowFailException
 from utlis.utlis_function import check_file_exists
 
+### TODO use ENV variable (docker, docker compose, env, conf) 
+#   Don't use direct path of credential file
 
 default_args = {
     'owner': 'Polakorn Anantapakorn',
@@ -18,9 +20,7 @@ default_args = {
 }
 
 spark_master = "spark://spark-master:7077"
-READ_DIR_PATH = "/opt/bitnami/spark/resources/dataset/"
-FLIE_NAME = "TMDB_movie_dataset_v11.csv"
-INPUT_FILE = READ_DIR_PATH + FLIE_NAME
+
 
 with DAG(
     dag_id="ETL_tmdb_dataset",
@@ -31,12 +31,12 @@ with DAG(
     tags=['project'],
 ) as dag:
     
-    check_dataset_is_exist = PythonOperator(
+    check_dataset_is_exist_task = PythonOperator(
     task_id="check_dataset_exists",
     python_callable=check_file_exists
     ) 
 
-    cleasing_data = SparkSubmitOperator(
+    cleasing_data_task = SparkSubmitOperator(
         task_id="cleasing_data",
         application="/opt/bitnami/spark/app/clean_data.py",
         name="spark_cleasing_data",
@@ -44,4 +44,7 @@ with DAG(
         conf={"spark.master":spark_master}
     )
 
-    check_dataset_is_exist >> cleasing_data
+    ### TODO create task transform data
+
+    ### TODO add transform data
+    check_dataset_is_exist_task >> cleasing_data_task

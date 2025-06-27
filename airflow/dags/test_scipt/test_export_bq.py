@@ -71,7 +71,7 @@ with DAG(
         task_id="download_from_gcs",
         bucket="tmdb-reco-flow-bucket",
         object_name="final/demo_movie.csv",
-        filename="/opt/airflow/data/output/demo_movie.csv",
+        filename="/opt/airflow/data//demo_movie.csv",
         gcp_conn_id="google_cloud_default",
     )
 

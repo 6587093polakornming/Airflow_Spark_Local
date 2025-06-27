@@ -20,3 +20,4 @@ eda/TMDB_movie_dataset_v11.csv
 /airflow/logs/dag_id=ETL_tmdb_dataset
 /spark/jupyter/.ipynb_checkpoints
 spark/resources/dataset/TMDB_movie_dataset_v11.csv
+.env

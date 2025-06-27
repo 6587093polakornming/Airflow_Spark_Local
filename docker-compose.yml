@@ -173,6 +173,8 @@ services:
     container_name: spark-master
     image: bitnami/spark:3.5.2
     user: "${AIRFLOW_UID}:0"
+    env_file:
+      - .env
     environment:
       - SPARK_MODE=master
       - SPARK_MASTER_PORT=7077
@@ -192,6 +194,8 @@ services:
     container_name: spark-worker-1
     image: bitnami/spark:3.5.2
     user: "${AIRFLOW_UID}:0"
+    env_file:
+      - .env
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -215,6 +219,8 @@ services:
       - "100"
     ports:
       - "8888:8888"
+    env_file:
+      - .env
     environment:
       - SPARK_MODE=client
       - SPARK_MASTER_URL=spark://spark-master:7077

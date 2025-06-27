@@ -8,10 +8,12 @@ if __name__ == "__main__":
     .getOrCreate()
 
     df = spark.createDataFrame([
-        (99, 8.5)
+        (88, 0.0)
     ], ["movie_id", "vote_average"])
 
     FACTTABLE_PATH_GCP = "datapipeline467803.tmdb_dw.fact_movie"
+
+    ### TODO Don't use direct Path
     CREDENTIAL_PATH = "/opt/bitnami/spark/resources/credential/key.json"
 
     df.write.format("bigquery") \

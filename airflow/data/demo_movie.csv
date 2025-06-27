@@ -1,0 +1,12 @@
+movie_id,title,vote_average,popularity,vote_count,budget,revenue,runtime,genres,keywords,companies,languages,countries
+4,Avatar,7.8,82.3,15000,237000000,2800000000,162,,rebellion,20th Century Fox,English,United States
+1,Inception,8.8,90.2,21000,160000000,829000000,148,"Action, Science Fiction",dream,Warner Bros.,English,United States
+2,The Matrix,8.7,88.5,18000,63000000,465000000,136,Action,virtual reality,Warner Bros.,English,United States
+3,Interstellar,8.6,85,19500,165000000,677000000,169,"Science Fiction, Adventure",space,Legendary Pictures,English,United States
+5,Spirited Away,8.5,75.6,13000,15000000,355000000,125,Fantasy,magic,Studio Ghibli,Japanese,Japan
+99,,8.5,,,,,,,,,,
+6,The Godfather,9.2,70.1,21000,6000000,246000000,175,Crime,mafia,Paramount Pictures,English,United States
+7,The Dark Knight,9.0,95.0,22000,185000000,1005000000,152,"Action, Crime",joker,Warner Bros.,English,United States
+8,Parasite,8.6,78.3,14000,11400000,258000000,132,Drama,class divide,Barunson E&A,Korean,South Korea
+9,The Shawshank Redemption,9.3,85.7,24000,25000000,73000000,142,Drama,prison,Castle Rock Entertainment,English,United States
+10,The Lion King,8.5,80.0,17000,45000000,968000000,88,Animation,lion,Disney,English,United States
