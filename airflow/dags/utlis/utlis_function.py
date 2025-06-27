@@ -5,9 +5,9 @@ from airflow.exceptions import AirflowFailException
 
 # Define the Python function to check file existence
 def check_file_exists():
-    input_path = "/opt/bitnami/spark/resources/dataset/TMDB_movie_dataset_v11.csv"
+    INPUT_PATH = "/opt/bitnami/spark/resources/dataset/TMDB_movie_dataset_v11.csv"
     
-    if not os.path.exists(input_path):
-        raise AirflowFailException(f"Dataset not found at: {input_path}")
+    if not os.path.exists(INPUT_PATH):
+        raise AirflowFailException(f"Dataset not found at: {INPUT_PATH}")
     
-    logging.info(f"Dataset found at: {input_path}")
+    logging.info(f"Dataset found at: {INPUT_PATH}")

@@ -21,3 +21,4 @@ eda/TMDB_movie_dataset_v11.csv
 /spark/jupyter/.ipynb_checkpoints
 spark/resources/dataset/TMDB_movie_dataset_v11.csv
 .env
+/spark/output
