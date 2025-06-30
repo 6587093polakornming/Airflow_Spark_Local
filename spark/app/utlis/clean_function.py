@@ -81,7 +81,7 @@ def clean_production_countries_column(valid_countries_df, df):
         logger.error(f"Error in clean_production_countries_column: {e}", exc_info=True)
         raise
 
-### TODO Create clean double quato on String Column (Replace Double quato with empty string)
+
 def clean_double_quotes(df, columns=None):
     """
     Replaces all double quotes in selected string columns with an empty string.

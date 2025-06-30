@@ -155,9 +155,9 @@ def process_tables_incrementally(df):
     try:
         # === Dimension Tables ===
         logger.info("Creating main movie dimension table")
-        dim_movie_df = df.select("id", "status", "release_date", "adult", "original_language", "overview") \
+        dim_movie_df = df.select("id","title" ,"status", "release_date", "adult", "original_language", "overview") \
                          .withColumnRenamed("id", "movie_id")
-        yield "dimension", "movie", dim_movie_df
+        yield "dim", "movie", dim_movie_df
         
         # === Fact Tables ===
         logger.info("Creating fact table")
@@ -178,7 +178,7 @@ def process_tables_incrementally(df):
         dim_tables = {}
         for col_name, dim_table in create_dimension_tables_generator(df, dim_specs):
             dim_tables[col_name] = dim_table
-            yield "dimension", col_name, dim_table
+            yield "dim", col_name, dim_table
         
         # === Create bridge tables incrementally ===
         for col_name, bridge_table in create_bridge_tables_generator(df, dim_tables, dim_specs):

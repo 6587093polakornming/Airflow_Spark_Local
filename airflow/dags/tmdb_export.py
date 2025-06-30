@@ -1,36 +1,35 @@
+### TODO DAGs Doc
+
+
 from airflow import DAG
+from utlis.utlis_function import merge_gcs_csv_shards
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 from airflow.operators.python import PythonOperator
 from airflow.providers.google.cloud.transfers.gcs_to_local import GCSToLocalFilesystemOperator
-from airflow.providers.google.cloud.hooks.gcs import GCSHook
 from airflow.utils.dates import days_ago
 
-def merge_gcs_csv_shards(bucket: str, prefix: str, destination: str):
-    hook = GCSHook(gcp_conn_id="google_cloud_default")
-    client = hook.get_conn()
-    blobs = list(client.list_blobs(bucket, prefix=prefix))
-    blobs_sorted = sorted(blobs, key=lambda b: b.name)
-    
-    first = True
-    merged_data = []
-    for blob in blobs_sorted:
-        data = blob.download_as_bytes().splitlines()
-        if first:
-            merged_data.extend(data)
-            first = False
-        else:
-            merged_data.extend(data[1:])
-    
-    # Upload merged file
-    merged_blob = client.bucket(bucket).blob(destination)
-    merged_blob.upload_from_string(b"\n".join(merged_data).decode('utf-8'))
+default_args = {
+    'owner': 'Polakorn Anantapakorn',
+    'start_date': days_ago(1),
+    'email': ['supakorn.ming@gmail.com'],
+    'email_on_failure': False,
+    'email_on_retry': False,
+    'retries': 0,
+}
+
+### TODO Update This DAGS 
+BUCKET_URI = "gs://tmdb-reco-flow-bucket"
+OUTPUT_FILENAME = "cbf_movie"
+PROJECT_ID = "datapipeline467803"
+DATASET_ID = "tmdb_dw"
+TABLE_NAME = "cbf_movie_recommendations_view"
 
 with DAG(
-    dag_id="bq_to_gcs_to_local",
+    dag_id="Export_Recom_Dataset_from_GCP",
     schedule_interval=None,
     start_date=days_ago(1),
     catchup=False,
-    tags=["bigquery", "bq_to_gcs"],
+    tags=['project']
 ) as dag:
 
     # 1️ Export CSV shards from BigQuery view
@@ -38,15 +37,15 @@ with DAG(
         task_id="export_view_to_gcs",
         configuration={
             "query": {
-                "query": """
+                "query": f"""
                     EXPORT DATA OPTIONS (
-                      uri='gs://tmdb-reco-flow-bucket/output/demo_movie_*.csv',
+                      uri='{BUCKET_URI}/output/{OUTPUT_FILENAME}_*.csv',
                       format='CSV',
                       overwrite=true,
                       header=true
                     )
                     AS
-                    SELECT * FROM `datapipeline467803.tmdb_dw.movie_enriched_view`;
+                    SELECT * FROM `{PROJECT_ID}.{DATASET_ID}.{TABLE_NAME}`;
                 """,
                 "useLegacySql": False,
             }
@@ -61,8 +60,8 @@ with DAG(
         python_callable=merge_gcs_csv_shards,
         op_kwargs={
             "bucket": "tmdb-reco-flow-bucket",
-            "prefix": "output/demo_movie_",
-            "destination": "final/demo_movie.csv",
+            "prefix": f"output/{OUTPUT_FILENAME}_",
+            "destination": f"final/{OUTPUT_FILENAME}.csv",
         },
     )
 
@@ -70,11 +69,12 @@ with DAG(
     download = GCSToLocalFilesystemOperator(
         task_id="download_from_gcs",
         bucket="tmdb-reco-flow-bucket",
-        object_name="final/demo_movie.csv",
-        filename="/opt/airflow/data//demo_movie.csv",
+        object_name=f"final/{OUTPUT_FILENAME}.csv",
+        filename=f"/opt/airflow/data/{OUTPUT_FILENAME}.csv",
         gcp_conn_id="google_cloud_default",
     )
 
+    ### TODO Add validation task
 
-    # export_bq >> merge_csv >> download
+    # Task Denpendency
     export_bq >> merge_csv >> download

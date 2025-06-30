@@ -1,24 +1,12 @@
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from airflow.utils.dates import days_ago
+from airflow.providers.google.common.hooks.base_google import GoogleBaseHook
+
+from google.cloud import bigquery
 import os
 from glob import glob
 import logging
-from google.cloud import bigquery
-from airflow.operators.python import PythonOperator
-from airflow.exceptions import AirflowFailException
-from airflow.providers.google.common.hooks.base_google import GoogleBaseHook
-from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
-from airflow.providers.google.cloud.transfers.gcs_to_local import GCSToLocalFilesystemOperator
-from airflow.providers.google.cloud.hooks.gcs import GCSHook
-
-
-# Define the Python function to check file existence
-def check_file_exists(filename="TMDB_movie_dataset_v11.csv"):
-    INPUT_PATH = f"/opt/bitnami/spark/resources/dataset/{filename}"
-    
-    if not os.path.exists(INPUT_PATH):
-        raise AirflowFailException(f"Dataset not found at: {INPUT_PATH}")
-    
-    logging.info(f"Dataset found at: {INPUT_PATH}")
-
 
 def upload_parquet_folder_to_bq(parquet_folder, table_id, gcp_conn_id="google_cloud_default"):
     logger = logging.getLogger("airflow.task")
@@ -60,22 +48,26 @@ def upload_parquet_folder_to_bq(parquet_folder, table_id, gcp_conn_id="google_cl
         raise
 
 
-def merge_gcs_csv_shards(bucket: str, prefix: str, destination: str):
-    hook = GCSHook(gcp_conn_id="google_cloud_default")
-    client = hook.get_conn()
-    blobs = list(client.list_blobs(bucket, prefix=prefix))
-    blobs_sorted = sorted(blobs, key=lambda b: b.name)
-    
-    first = True
-    merged_data = []
-    for blob in blobs_sorted:
-        data = blob.download_as_bytes().splitlines()
-        if first:
-            merged_data.extend(data)
-            first = False
-        else:
-            merged_data.extend(data[1:])
-    
-    # Upload merged file
-    merged_blob = client.bucket(bucket).blob(destination)
-    merged_blob.upload_from_string(b"\n".join(merged_data).decode('utf-8'))
+# DAG config
+default_args = {"owner": "airflow"}
+PROJECT_ID = "datapipeline467803"
+DATASET_ID = "tmdb_dw"
+TABLE_NAME = "fact_movie"
+
+with DAG(
+    dag_id="upload_parquet_folder_to_bigquery",
+    start_date=days_ago(1),
+    schedule_interval=None,
+    catchup=False,
+    default_args=default_args,
+    tags=['bigquery']
+) as dag:
+
+    upload_fact = PythonOperator(
+        task_id="upload_fact_movie",
+        python_callable=upload_parquet_folder_to_bq,
+        op_kwargs={
+            "parquet_folder": "/opt/shared/output/fact_movie",
+            "table_id": f"{PROJECT_ID}.{DATASET_ID}.{TABLE_NAME}"
+        }
+    )

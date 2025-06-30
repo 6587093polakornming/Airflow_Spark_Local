@@ -28,13 +28,21 @@ Default Arguments
 """
 
 import os
+from datetime import timedelta
 from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
+from airflow.providers.google.common.hooks.base_google import GoogleBaseHook
 from airflow.utils.dates import days_ago
-from datetime import timedelta
 from airflow.operators.python import PythonOperator
 from airflow.exceptions import AirflowFailException
-from utlis.utlis_function import check_file_exists
+from airflow.utils.task_group import TaskGroup
+from utlis.utlis_function import check_file_exists, upload_parquet_folder_to_bq
+from airflow.providers.google.cloud.sensors.bigquery import BigQueryTableExistenceSensor
+from airflow.providers.google.cloud.operators.bigquery import (
+    BigQueryCheckOperator,
+    BigQueryGetDataOperator
+)
+
 
 default_args = {
     'owner': 'Polakorn Anantapakorn',
@@ -46,6 +54,22 @@ default_args = {
 }
 
 spark_master = "spark://spark-master:7077"
+PROJECT_ID = "datapipeline467803"
+DATASET_ID = "tmdb_dw"
+load_dataset_lst = [
+    {'table_name': 'dim_movie', 'parquet_filename': "dim_movie"},
+    {'table_name': 'dim_keyword', 'parquet_filename': "dim_keywords"},
+    {'table_name': 'dim_production_company', 'parquet_filename': "dim_production_companies"},
+    {'table_name': 'dim_spoken_language', 'parquet_filename': "dim_spoken_languages"},
+    {'table_name': 'dim_production_country', 'parquet_filename': "dim_production_countries"},
+    {'table_name': 'dim_genre', 'parquet_filename': "dim_genres"},
+    {'table_name': 'bridge_movie_keyword', 'parquet_filename': "bridge_keywords"},
+    {'table_name': 'bridge_movie_company', 'parquet_filename': "bridge_production_companies"},
+    {'table_name': 'bridge_movie_language', 'parquet_filename': "bridge_spoken_languages"},
+    {'table_name': 'bridge_movie_country', 'parquet_filename': "bridge_production_countries"},
+    {'table_name': 'bridge_movie_genre', 'parquet_filename': "bridge_genres"},
+    {'table_name': 'fact_movie', 'parquet_filename': "fact_movie"},
+]
 
 
 with DAG(
@@ -56,14 +80,13 @@ with DAG(
     catchup=False,
     tags=['project'],
 ) as dag:
-    
-    # 👇 Assign docstring to the DAG
+
     dag.doc_md = __doc__
-    
+
     check_dataset_is_exist_task = PythonOperator(
         task_id="check_dataset_exists",
         python_callable=check_file_exists
-    ) 
+    )
 
     cleasing_data_task = SparkSubmitOperator(
         task_id="cleasing_data",
@@ -80,6 +103,70 @@ with DAG(
         conn_id="spark_default",
         conf={"spark.master": spark_master}
     )
+    
+    # TaskGroup for BigQuery uploads
+    with TaskGroup(group_id='load_to_bigquery_group', tooltip="Upload to BigQuery") as load_group:
+
+        # Sort load tasks: dimensions -> bridge -> fact
+        dimension_tables = [d for d in load_dataset_lst if d['table_name'].startswith("dim_")]
+        bridge_tables = [d for d in load_dataset_lst if d['table_name'].startswith("bridge_")]
+        fact_tables = [d for d in load_dataset_lst if d['table_name'].startswith("fact_")]
+
+        ordered_tasks = dimension_tables + bridge_tables + fact_tables
+
+        for dataset in ordered_tasks:
+            table_name = dataset["table_name"]
+            parquet_folder = f"/opt/shared/output/{dataset['parquet_filename']}"
+            table_id = f"{PROJECT_ID}.{DATASET_ID}.{table_name}"
+
+            PythonOperator(
+                task_id=f"upload_{table_name}",
+                python_callable=upload_parquet_folder_to_bq,
+                op_kwargs={
+                    "parquet_folder": parquet_folder,
+                    "table_id": table_id,
+                    "gcp_conn_id": "google_cloud_default"
+                }
+            )
+
+    # After TaskGroup load_to_bigquery_group
+    with TaskGroup(group_id='validate_bigquery_group', tooltip="Validate BigQuery loads") as validate_group:
+        for dataset in ordered_tasks:
+            table = dataset["table_name"]
+            table_ref = f"{PROJECT_ID}.{DATASET_ID}.{table}"
+
+            # 1️ Ensure the table exists
+            t_exist = BigQueryTableExistenceSensor(
+                task_id=f"check_{table}_exists",
+                project_id=PROJECT_ID,
+                dataset_id=DATASET_ID,
+                table_id=table,
+                gcp_conn_id="google_cloud_default",
+                # deferrable=True  # optional
+            )
+
+            # 2️ Check record count > 0
+            t_count = BigQueryCheckOperator(
+                task_id=f"check_{table}_has_rows",
+                sql=f"SELECT COUNT(*) FROM `{table_ref}`",
+                use_legacy_sql=False,
+                gcp_conn_id="google_cloud_default",
+                # deferrable=True
+            )
+
+            # 3️ (Optional) Inspect schema: fetch first row and inspect types
+            t_schema = BigQueryGetDataOperator(
+                task_id=f"get_{table}_schema_sample",
+                dataset_id=DATASET_ID,
+                table_id=table,
+                max_results=1,
+                selected_fields=None,
+                gcp_conn_id="google_cloud_default"
+            )
+
+            # Chain validations: exists ➝ record count ➝ sample schema
+            t_exist >> t_count >> t_schema
+
 
     # DAG Dependencies
-    check_dataset_is_exist_task >> cleasing_data_task >> transform_data_task
+    check_dataset_is_exist_task >> cleasing_data_task >> transform_data_task >> load_group >> validate_group

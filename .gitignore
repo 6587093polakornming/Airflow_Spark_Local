@@ -22,3 +22,7 @@ eda/TMDB_movie_dataset_v11.csv
 spark/resources/dataset/TMDB_movie_dataset_v11.csv
 .env
 /spark/output
+/airflow/logs/dag_id=Export_Recom_Dataset_from_GCP
+/airflow/logs/dag_id=upload_parquet_folder_to_bigquery
+airflow/data/cbf_movie.csv
+eda/cleaned_data.csv
