@@ -80,3 +80,33 @@ def clean_production_countries_column(valid_countries_df, df):
     except Exception as e:
         logger.error(f"Error in clean_production_countries_column: {e}", exc_info=True)
         raise
+
+### TODO Create clean double quato on String Column (Replace Double quato with empty string)
+def clean_double_quotes(df, columns=None):
+    """
+    Replaces all double quotes in selected string columns with an empty string.
+
+    Parameters:
+    - df: Spark DataFrame
+    - columns: List of column names to clean. If None, it will not clean any columns.
+    """
+    try:
+        logger.info("Starting clean_double_quotes")
+
+        if columns is None:
+            logger.warning("No columns specified for double quote cleaning. Returning DataFrame unchanged.")
+            return df
+
+        for col_name in columns:
+            if col_name in df.columns:
+                df = df.withColumn(col_name, f.regexp_replace(f.col(col_name), '"', ''))
+            else:
+                logger.warning(f"Column '{col_name}' not found in DataFrame. Skipping.")
+
+        logger.info("Completed clean_double_quotes")
+        return df
+
+    except Exception as e:
+        logger.error(f"Error in clean_double_quotes: {e}", exc_info=True)
+        raise
+

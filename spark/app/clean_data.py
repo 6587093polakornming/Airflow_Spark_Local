@@ -3,7 +3,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql import functions as f
 from pyspark.sql.types import BooleanType, DoubleType, IntegerType
 from pyspark.sql.functions import split, expr, trim, lower, explode, col, concat_ws, collect_list, sum
-from utlis.clean_function import clean_genres_column, clean_production_countries_column
+from utlis.clean_function import clean_double_quotes, clean_genres_column, clean_production_countries_column
 
 # Configure logging
 logging.basicConfig(
@@ -87,11 +87,16 @@ if __name__ == "__main__":
         df_step9 = clean_genres_column(genres_lst, df_step8)
         logger.info("Step 9: Cleaned genres column")
 
+        # Apply clean_double_quotes only to specific columns
+        clean_columns = ["title", "overview", "keywords"]
+        df_step10 = clean_double_quotes(df_step9, clean_columns)
+        logger.info(f"Step 10: Removed double quotes from columns: {clean_columns}")
+
         df_iso = spark.read.option("header", True).csv(VALIDATE_FILE)
         logger.info(f"Loaded ISO country validation file: {VALIDATE_FILE}")
 
-        df_cleaned = clean_production_countries_column(df_iso, df_step9)
-        logger.info("Step 10: Cleaned production countries column")
+        df_cleaned = clean_production_countries_column(df_iso, df_step10)
+        logger.info("Step 11: Cleaned production countries column")
 
         df_cleaned.show(5)
         logger.info("Displaying 5 rows of final cleaned data")
@@ -103,7 +108,13 @@ if __name__ == "__main__":
         cleaned_count = df_cleaned.count()
         logger.info(f"Total cleaned records: {cleaned_count}")
 
-        df_cleaned.coalesce(1).write.mode("overwrite").csv(OUTPUT_PATH, header=True)
+        # Save to Local Storage
+        df_cleaned.coalesce(1).write \
+            .option("header", True) \
+            .option("quoteAll", True) \
+            .mode("overwrite") \
+            .csv(OUTPUT_PATH)
+        
         logger.info(f"Final cleaned data saved to: {OUTPUT_PATH}")
 
     except Exception as e:
