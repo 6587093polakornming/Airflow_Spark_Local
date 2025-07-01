@@ -21,6 +21,8 @@ if __name__ == "__main__":
         .config("spark.sql.adaptive.enabled", "true") \
         .config("spark.sql.adaptive.coalescePartitions.enabled", "true") \
         .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer") \
+        .config("spark.sql.legacy.parquet.datetimeRebaseModeInWrite", "LEGACY") \
+        .config("spark.sql.legacy.parquet.int96RebaseModeInWrite", "LEGACY") \
         .getOrCreate()
 
     try:

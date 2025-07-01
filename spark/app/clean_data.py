@@ -47,7 +47,7 @@ if __name__ == "__main__":
         df_step1 = df.drop(*drop_col_list)
         logger.info("Step 1: Dropped unnecessary columns")
 
-        dropna_col_lst = ["title", "release_date", "adult", "budget", "original_language", "overview", "popularity", "genres", "production_companies", "production_countries", "spoken_languages", "keywords"]
+        dropna_col_lst = ["title", "release_date", "adult", "original_language", "overview", "popularity", "genres", "production_companies", "production_countries", "spoken_languages", "keywords"]
         df_step2 = df_step1.na.drop(subset=dropna_col_lst)
         logger.info("Step 2: Dropped null values")
 
@@ -67,17 +67,28 @@ if __name__ == "__main__":
         logger.info("Step 5: Converted release_date to timestamp")
 
         # NOTE check cut_off_date
-        cutoff_date = "2025-06-02"
-        df_step6 = df_step5.filter(f.col("release_date") <= f.lit(cutoff_date))
-        logger.info(f"Step 6: Filtered by cutoff:{cutoff_date}:(YYYY-MM-DD) release_date")
+        # Define cutoff date range
+        after_cutoff_date = "1700-01-01"
+        before_cutoff_date = "2025-06-02"
 
-        df_step7 = df_step6.filter( 
-            (col("vote_average") > 0.0) & 
-            (col("vote_count") > 0) & 
-            (col("revenue") > 0) & 
-            (col("runtime") > 0) & 
-            (col("budget") > 0) & 
-            (col("popularity") > 0.0)
+        # Filter release_date to be within the valid range
+        df_step6 = df_step5.filter(
+            (f.col("release_date") >= f.lit(after_cutoff_date)) &
+            (f.col("release_date") <= f.lit(before_cutoff_date))
+        )
+        logger.info(f"Step 6: Filtered release_date between {after_cutoff_date} and {before_cutoff_date} (inclusive)")
+
+        # Step 7: Replace NA with 0 on numeric columns, then filter invalid values
+        numeric_cols = ["vote_average", "vote_count", "revenue", "runtime", "budget", "popularity"]
+        df_step6_filled = df_step6.fillna(0, subset=numeric_cols)
+
+        df_step7 = df_step6_filled.filter( 
+            (col("vote_average") >= 0.0) & 
+            (col("vote_count") >= 0) & 
+            (col("revenue") >= 0) & 
+            (col("runtime") >= 0) & 
+            (col("budget") >= 0) & 
+            (col("popularity") >= 0.0)
         )
         logger.info("Step 7: Filtered invalid numeric values")
 

@@ -26,3 +26,4 @@ spark/resources/dataset/TMDB_movie_dataset_v11.csv
 /airflow/logs/dag_id=upload_parquet_folder_to_bigquery
 airflow/data/cbf_movie.csv
 eda/cleaned_data.csv
+/spark/tmp

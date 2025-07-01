@@ -1,6 +1,7 @@
 import os
 from glob import glob
 import logging
+import pandas as pd
 from google.cloud import bigquery
 from airflow.operators.python import PythonOperator
 from airflow.exceptions import AirflowFailException
@@ -79,3 +80,62 @@ def merge_gcs_csv_shards(bucket: str, prefix: str, destination: str):
     # Upload merged file
     merged_blob = client.bucket(bucket).blob(destination)
     merged_blob.upload_from_string(b"\n".join(merged_data).decode('utf-8'))
+
+
+def validate_csv(filepath: str):
+    logger = logging.getLogger("airflow.task")
+    logger.info(f"Starting validation for file: {filepath}")
+
+    try:
+        df = pd.read_csv(filepath)
+        logger.info(f"Loaded CSV with shape: {df.shape}")
+
+        expected_columns = ["movie_id", "title", "genres", "keywords", "overview"]
+        actual_columns = list(df.columns)
+
+        # 1. Column name validation
+        if actual_columns != expected_columns:
+            raise ValueError(f"Schema mismatch! Expected: {expected_columns}, Got: {actual_columns}")
+        logger.info("Column names validation passed")
+
+        # 2. Data type validation
+        if not pd.api.types.is_integer_dtype(df["movie_id"]):
+            raise ValueError("Column 'movie_id' must be of type INTEGER")
+        for col in ["title", "genres", "keywords", "overview"]:
+            if not pd.api.types.is_string_dtype(df[col]):
+                raise ValueError(f"Column '{col}' must be of type STRING")
+        logger.info("Data type validation passed")
+
+        # 3. Null check
+        if df.isnull().any().any():
+            null_report = df.isnull().sum()
+            raise ValueError(f"Null values found:\n{null_report}")
+        logger.info("Null value check passed")
+
+        # 4. Duplicate check on movie_id
+        if df.duplicated(subset=["movie_id"]).any():
+            duplicates = df[df.duplicated(subset=["movie_id"], keep=False)]
+            raise ValueError(f"Duplicate movie_id found:\n{duplicates}")
+        logger.info("Duplicate ID check passed")
+
+        # 5. Text length check
+        text_columns = ["title", "overview"]
+        for col in text_columns:
+            blank_rows = df[col].astype(str).str.strip() == ""
+            if blank_rows.any():
+                raise ValueError(f"Blank or whitespace-only values found in '{col}':\n{df[blank_rows]}")
+        logger.info("Text length check passed")
+
+        # 6. Corrupt character check
+        corrupted_char = "�"
+        corrupted_found = df.apply(lambda col: col.astype(str).str.contains(corrupted_char)).any()
+        if corrupted_found.any():
+            corrupt_columns = corrupted_found[corrupted_found].index.tolist()
+            raise ValueError(f"Corrupted character '{corrupted_char}' found in columns: {corrupt_columns}")
+        logger.info("Encoding check passed")
+
+        logger.info("Data validation completed successfully.")
+
+    except Exception as e:
+        logger.error(f"Validation failed: {str(e)}")
+        raise

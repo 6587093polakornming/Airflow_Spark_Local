@@ -89,9 +89,9 @@ with DAG(
     )
 
     cleasing_data_task = SparkSubmitOperator(
-        task_id="cleasing_data",
+        task_id="cleansing_data",
         application="/opt/bitnami/spark/app/clean_data.py",
-        name="spark_cleasing_data",
+        name="spark_cleansing_data",
         conn_id="spark_default",
         conf={"spark.master": spark_master}
     )
