@@ -186,6 +186,7 @@ services:
       - ${SPARK_PROJ_DIR:-spark}/app:/opt/bitnami/spark/app
       - ${SPARK_PROJ_DIR:-spark}/resources:/opt/bitnami/spark/resources
       - ${SPARK_PROJ_DIR:-spark}/output:/opt/shared/output
+      - ./tests:/opt/bitnami/spark/tests
     networks:
       - default_network
     restart: always

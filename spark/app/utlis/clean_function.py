@@ -1,7 +1,17 @@
 import logging
 from pyspark.sql import functions as f
 from pyspark.sql.types import BooleanType, DoubleType, IntegerType
-from pyspark.sql.functions import split, expr, trim, lower, explode, col, concat_ws, collect_list, sum 
+from pyspark.sql.functions import (
+    split,
+    expr,
+    trim,
+    lower,
+    explode,
+    col,
+    concat_ws,
+    collect_list,
+    sum,
+)
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -27,7 +37,9 @@ def clean_genres_column(genres_lst, df):
         logger.debug(f"Valid genre array: {genres_array_str}")
 
         # Step 3: Filter rows where all genres are in the valid list
-        df_valid = df_split.filter(expr(f"size(array_except(genre_array, {genres_array_str})) = 0"))
+        df_valid = df_split.filter(
+            expr(f"size(array_except(genre_array, {genres_array_str})) = 0")
+        )
         logger.info("Filtered valid genres")
 
         # Step 4: Drop helper column if needed
@@ -45,7 +57,9 @@ def clean_production_countries_column(valid_countries_df, df):
         logger.info("Starting clean_production_countries_column")
 
         # Step 1: Split into array
-        df_split = df.withColumn("country_array", split(col("production_countries"), ",\\s*"))
+        df_split = df.withColumn(
+            "country_array", split(col("production_countries"), ",\\s*")
+        )
         logger.debug("Split countries column into array")
 
         # Step 2: Explode into individual rows
@@ -53,27 +67,33 @@ def clean_production_countries_column(valid_countries_df, df):
         logger.debug("Exploded country array")
 
         # Step 3: Normalize country values
-        df_normalized = df_exploded.withColumn("country_norm", lower(trim(col("country_raw"))))
+        df_normalized = df_exploded.withColumn(
+            "country_norm", lower(trim(col("country_raw")))
+        )
         logger.debug("Normalized country values")
 
         # Step 4: Join with ISO list
         df_valid = df_normalized.join(
             valid_countries_df,
             df_normalized["country_norm"] == valid_countries_df["country_name"],
-            how="inner"
+            how="inner",
         )
         logger.debug("Joined with valid ISO country list")
 
         # Step 5: Rebuild valid country list per movie
         df_grouped = df_valid.groupBy("id").agg(
-            concat_ws(", ", collect_list("country_name")).alias("cleaned_production_countries")
+            concat_ws(", ", collect_list("country_name")).alias(
+                "cleaned_production_countries"
+            )
         )
         logger.debug("Grouped valid countries by movie")
 
         # Step 6: Join with original dataset (to keep other columns)
-        df_final = df.join(df_grouped, on="id", how="inner") \
-                     .drop("production_countries") \
-                     .withColumnRenamed("cleaned_production_countries", "production_countries")
+        df_final = (
+            df.join(df_grouped, on="id", how="inner")
+            .drop("production_countries")
+            .withColumnRenamed("cleaned_production_countries", "production_countries")
+        )
         logger.info("Completed clean_production_countries_column")
         return df_final
 
@@ -94,12 +114,14 @@ def clean_double_quotes(df, columns=None):
         logger.info("Starting clean_double_quotes")
 
         if columns is None:
-            logger.warning("No columns specified for double quote cleaning. Returning DataFrame unchanged.")
+            logger.warning(
+                "No columns specified for double quote cleaning. Returning DataFrame unchanged."
+            )
             return df
 
         for col_name in columns:
             if col_name in df.columns:
-                df = df.withColumn(col_name, f.regexp_replace(f.col(col_name), '"', ''))
+                df = df.withColumn(col_name, f.regexp_replace(f.col(col_name), '"', ""))
             else:
                 logger.warning(f"Column '{col_name}' not found in DataFrame. Skipping.")
 
@@ -109,4 +131,3 @@ def clean_double_quotes(df, columns=None):
     except Exception as e:
         logger.error(f"Error in clean_double_quotes: {e}", exc_info=True)
         raise
-

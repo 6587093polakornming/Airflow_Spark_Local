@@ -27,3 +27,5 @@ spark/resources/dataset/TMDB_movie_dataset_v11.csv
 airflow/data/cbf_movie.csv
 eda/cleaned_data.csv
 /spark/tmp
+**/__init__.py
+spark/app/utlis/__init___.py

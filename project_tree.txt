@@ -1,0 +1,115 @@
+TMDB_RECOFLOW
+├── airflow
+│   ├── config
+│   ├── dags
+│   │   ├── __pycache__
+│   │   ├── test_scipt
+│   │   ├── utlis
+│   │   ├── tmdb_ETL.py
+│   │   └── tmdb_export.py
+│   ├── data
+│   │   ├── cbf_movie.csv
+│   │   └── demo_movie.csv
+│   ├── logs
+│   │   ├── dag_id=bq_to_gcs_to_local
+│   │   ├── dag_id=ETL_tmdb_dataset
+│   │   ├── dag_id=Export_Recom_Dataset_from_GCP
+│   │   ├── dag_id=spark_read_from_bigquery
+│   │   ├── dag_id=spark_read_from_spark
+│   │   ├── dag_id=spark_write_to_bigquery
+│   │   ├── dag_id=upload_parquet_folder_to_bigquery
+│   │   ├── dag_processor_manager
+│   │   └── scheduler
+│   └── plugins
+├── doc
+│   ├── diagram
+│   │   ├── datapipeline467803 - datapipeline467803 - tmdb_dw.png
+│   │   ├── dw_tmdb.png
+│   │   ├── export_flow_digram.drawio
+│   │   ├── export_flow_digram.jpg
+│   │   ├── export_flow_digram.png
+│   │   ├── flow_diagram.drawio
+│   │   ├── flow_diagram.jpg
+│   │   ├── flow_diagram.png
+│   │   ├── TMDB_arch_ov.drawio
+│   │   └── TMDB_arch_ov.drawio.png
+│   ├── Data Engineer Internship Assignment.pdf
+│   ├── ProjectBrief.pdf
+│   └── Report Draft.docx
+├── eda
+│   ├── cbf_movie.csv
+│   ├── cleaned_data.csv
+│   ├── demo_movie.csv
+│   ├── eda_notebook.ipynb
+│   ├── look_output_data.ipynb
+│   ├── requirements.txt
+│   └── TMDB_movie_dataset_v11.csv
+├── misc
+│   ├── dataset_link.txt
+│   └── project_tree.txt
+├── model
+│   ├── cbf_movie_recommendation.ipynb
+│   ├── demo_cbf_movie_recommendation.ipynb
+│   ├── demo_cdf_script.py
+│   ├── recommendation-system-movie-recommendation.ipynb
+│   └── requirements.txt
+├── spark
+│   ├── app
+│   │   ├── utlis
+│   │   ├── clean_data.py
+│   │   ├── read_data_bq.py
+│   │   ├── read_data_spark.py
+│   │   ├── send_data_bq.py
+│   │   ├── transform_data.py
+│   │   └── wordcount.py
+│   ├── jupyter
+│   │   ├── .ipynb_checkpoints
+│   │   ├── cleansing_script.ipynb
+│   │   ├── demo_cleansng.ipynb
+│   │   ├── demo_transform.ipynb
+│   │   ├── notebook.ipynb
+│   │   ├── simple.ipynb
+│   │   ├── transform_script.ipynb
+│   │   └── wordcount.py
+│   ├── output
+│   │   ├── bridge_genres
+│   │   ├── bridge_keywords
+│   │   ├── bridge_production_companies
+│   │   ├── bridge_production_countries
+│   │   ├── bridge_spoken_languages
+│   │   ├── cleaned_data
+│   │   ├── dim_genres
+│   │   ├── dim_keywords
+│   │   ├── dim_movie
+│   │   ├── dim_production_companies
+│   │   ├── dim_production_countries
+│   │   ├── dim_spoken_languages
+│   │   └── fact_movie
+│   ├── resources
+│   │   ├── credential
+│   │   └── dataset
+│   └── tmp
+│       ├── bridge_genres
+│       ├── bridge_keywords
+│       ├── bridge_production_companies
+│       ├── bridge_production_countries
+│       ├── bridge_spoken_languages
+│       ├── cleaned_data
+│       ├── dim_genres
+│       ├── dim_keywords
+│       ├── dim_movie
+│       ├── dim_production_companies
+│       ├── dim_production_countries
+│       ├── dim_spoken_languages
+│       ├── fact_movie
+│       └── fact_movie_csv_export
+├── tests
+|
+├── .env
+├── .gitignore
+├── docker-compose.yml
+├── Dockerfile
+├── Dockerfile.jupyter
+├── example.env
+├── print_tree.py
+└── project_tree.txt

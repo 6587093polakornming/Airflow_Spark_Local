@@ -1,30 +1,30 @@
 ### TODO DAGs Doc
 # 📝 DAG Documentation
 """
-## 📝 DAG Documentation - ETL_tmdb_dataset  
+## 📝 DAG Documentation - ETL_tmdb_dataset
 **ETL pipeline for cleansing and transforming TMDB dataset**
 
-⚙️  
-Default Arguments  
-&ensp;&ensp;  
-🧑‍💻 **Owner**: &ensp; `Polakorn Anantapakorn` &emsp; | &emsp; 🕒 **Schedule**: &ensp; `None` &emsp; | &emsp; 🗓️ **Start Date**: &ensp; `days_ago(1)` &emsp; | &emsp;  
-####  
-📋 Pipeline Info  
--  
-📌  
-**Source**: &ensp; `TMDB Dataset (v11)`  
--  
-🗂️  
-**Source Data**: &ensp; `/opt/bitnami/spark/resources/dataset/TMDB_movie_dataset_v11.csv`  
--  
-📦  
-**Destination**: &ensp; `/opt/shared/output/`  
--  
-🔗  
-**Github Link**: &ensp; [ETL_tmdb_dataset](https://github.com/your-org/tmdb-etl-project)  
-####  
-📞 Contact  
-&ensp;&ensp;  
+⚙️
+Default Arguments
+&ensp;&ensp;
+🧑‍💻 **Owner**: &ensp; `Polakorn Anantapakorn` &emsp; | &emsp; 🕒 **Schedule**: &ensp; `None` &emsp; | &emsp; 🗓️ **Start Date**: &ensp; `days_ago(1)` &emsp; | &emsp;
+####
+📋 Pipeline Info
+-
+📌
+**Source**: &ensp; `TMDB Dataset (v11)`
+-
+🗂️
+**Source Data**: &ensp; `/opt/bitnami/spark/resources/dataset/TMDB_movie_dataset_v11.csv`
+-
+📦
+**Destination**: &ensp; `/opt/shared/output/`
+-
+🔗
+**Github Link**: &ensp; [ETL_tmdb_dataset](https://github.com/your-org/tmdb-etl-project)
+####
+📞 Contact
+&ensp;&ensp;
 📧 **Requestor Team**: &ensp; `Data Engineering` &emsp; | &emsp; 👥 **Source Team**: &ensp; `TMDB API` &emsp; | &emsp; 🧑‍💻 **Users Team**: &ensp; `ML/Analytics`
 """
 
@@ -33,20 +33,22 @@ from utlis.utlis_function import merge_gcs_csv_shards, validate_csv
 from airflow.utils.dates import days_ago
 from airflow.operators.python import PythonOperator
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
-from airflow.providers.google.cloud.transfers.gcs_to_local import GCSToLocalFilesystemOperator
+from airflow.providers.google.cloud.transfers.gcs_to_local import (
+    GCSToLocalFilesystemOperator,
+)
 
 
 default_args = {
-    'owner': 'Polakorn Anantapakorn',
-    'start_date': days_ago(1),
-    'email': ['supakorn.ming@gmail.com'],
-    'email_on_failure': False,
-    'email_on_retry': False,
-    'retries': 0,
+    "owner": "Polakorn Anantapakorn",
+    "start_date": days_ago(1),
+    "email": ["supakorn.ming@gmail.com"],
+    "email_on_failure": False,
+    "email_on_retry": False,
+    "retries": 0,
 }
 
 
-### TODO Update This DAGS 
+### TODO Update This DAGS
 BUCKET_URI = "gs://tmdb-reco-flow-bucket"
 OUTPUT_FILENAME = "cbf_movie"
 PROJECT_ID = "datapipeline467803"
@@ -59,9 +61,9 @@ with DAG(
     schedule_interval=None,
     start_date=days_ago(1),
     catchup=False,
-    tags=['project']
+    tags=["project"],
 ) as dag:
-    
+
     dag.doc_md = __doc__
 
     # 1️ Export CSV shards from BigQuery view
@@ -112,7 +114,6 @@ with DAG(
         python_callable=validate_csv,
         op_kwargs={"filepath": f"/opt/airflow/data/{OUTPUT_FILENAME}.csv"},
     )
-
 
     # ====== Task Denpendency ======
     export_bq >> merge_csv >> download >> validate
