@@ -29,7 +29,7 @@ Default Arguments
 """
 
 from airflow import DAG
-from utlis.utlis_function import merge_gcs_csv_shards, validate_csv
+from utlis.utlis_function import merge_gcs_parquet_shards, validate_parquet
 from airflow.utils.dates import days_ago
 from airflow.operators.python import PythonOperator
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
@@ -66,17 +66,16 @@ with DAG(
 
     dag.doc_md = __doc__
 
-    # 1️ Export CSV shards from BigQuery view
+    # 1️ Export Parquet shards from BigQuery
     export_bq = BigQueryInsertJobOperator(
         task_id="export_view_to_gcs",
         configuration={
             "query": {
                 "query": f"""
                     EXPORT DATA OPTIONS (
-                      uri='{BUCKET_URI}/output/{OUTPUT_FILENAME}_*.csv',
-                      format='CSV',
-                      overwrite=true,
-                      header=true
+                      uri='{BUCKET_URI}/output/{OUTPUT_FILENAME}_*.parquet',
+                      format='PARQUET',
+                      overwrite=true
                     )
                     AS
                     SELECT * FROM `{PROJECT_ID}.{DATASET_ID}.{TABLE_NAME}`;
@@ -88,32 +87,33 @@ with DAG(
         gcp_conn_id="google_cloud_default",
     )
 
-    # 2️ Merge CSV shards in GCS into a single clean file
-    merge_csv = PythonOperator(
-        task_id="merge_csv_shards",
-        python_callable=merge_gcs_csv_shards,
+    # 2️ Merge Parquet shards into one file
+    merge_parquet = PythonOperator(
+        task_id="merge_parquet_shards",
+        python_callable=merge_gcs_parquet_shards,
         op_kwargs={
             "bucket": "tmdb-reco-flow-bucket",
             "prefix": f"output/{OUTPUT_FILENAME}_",
-            "destination": f"final/{OUTPUT_FILENAME}.csv",
+            # "prefix": f"output/cbf_movie_demo",
+            "destination": f"final/{OUTPUT_FILENAME}.parquet",
         },
     )
 
-    # 3️ Download the final CSV locally
+    # 3️ Download final Parquet file
     download = GCSToLocalFilesystemOperator(
         task_id="download_from_gcs",
         bucket="tmdb-reco-flow-bucket",
-        object_name=f"final/{OUTPUT_FILENAME}.csv",
-        filename=f"/opt/airflow/data/{OUTPUT_FILENAME}.csv",
+        object_name=f"final/{OUTPUT_FILENAME}.parquet",
+        filename=f"/opt/airflow/data/{OUTPUT_FILENAME}.parquet",
         gcp_conn_id="google_cloud_default",
     )
 
-    # 4 validation task
+    # 4️ Validate Parquet data
     validate = PythonOperator(
         task_id="validate_data",
-        python_callable=validate_csv,
-        op_kwargs={"filepath": f"/opt/airflow/data/{OUTPUT_FILENAME}.csv"},
+        python_callable=validate_parquet,
+        op_kwargs={"filepath": f"/opt/airflow/data/{OUTPUT_FILENAME}.parquet"},
     )
 
-    # ====== Task Denpendency ======
-    export_bq >> merge_csv >> download >> validate
+    # ====== Task Dependencies ======
+    export_bq >> merge_parquet >> download >> validate

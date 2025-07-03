@@ -1,7 +1,11 @@
 import os
+import io
 from glob import glob
 import logging
 import pandas as pd
+import pyarrow as pa
+import pyarrow.parquet as pq
+from tempfile import NamedTemporaryFile
 from google.cloud import bigquery
 from airflow.operators.python import PythonOperator
 from airflow.exceptions import AirflowFailException
@@ -76,46 +80,75 @@ def upload_parquet_folder_to_bq(
         raise
 
 
-def merge_gcs_csv_shards(bucket: str, prefix: str, destination: str):
-    hook = GCSHook(gcp_conn_id="google_cloud_default")
-    client = hook.get_conn()
-    blobs = list(client.list_blobs(bucket, prefix=prefix))
-    blobs_sorted = sorted(blobs, key=lambda b: b.name)
+def merge_gcs_parquet_shards(bucket: str, prefix: str, destination: str):
+    logger = logging.getLogger("airflow.task")
+    logger.info(f"📦 Starting streaming merge of Parquet shards from GCS: bucket='{bucket}', prefix='{prefix}'")
 
-    first = True
-    merged_data = []
-    for blob in blobs_sorted:
-        data = blob.download_as_bytes().splitlines()
-        if first:
-            merged_data.extend(data)
-            first = False
-        else:
-            merged_data.extend(data[1:])
+    try:
+        hook = GCSHook(gcp_conn_id="google_cloud_default")
+        client = hook.get_conn()
 
-    # Upload merged file
-    merged_blob = client.bucket(bucket).blob(destination)
-    merged_blob.upload_from_string(b"\n".join(merged_data).decode("utf-8"))
+        blobs = list(client.list_blobs(bucket, prefix=prefix))
+        if not blobs:
+            raise ValueError(f"🚫 No Parquet files found with prefix '{prefix}' in bucket '{bucket}'")
+
+        blobs_sorted = sorted(blobs, key=lambda b: b.name)
+        logger.info(f"📄 Found {len(blobs_sorted)} Parquet shard(s) to merge")
+
+        with NamedTemporaryFile(suffix=".parquet", delete=False) as tmp_file:
+            temp_path = tmp_file.name
+            logger.info(f"📁 Temporary file for merge: {temp_path}")
+
+            for i, blob in enumerate(blobs_sorted):
+                try:
+                    logger.info(f"⬇️ Downloading and reading blob: {blob.name} ({blob.size} bytes)")
+                    byte_data = blob.download_as_bytes()
+                    df = pd.read_parquet(io.BytesIO(byte_data), engine="fastparquet")
+
+                    mode = "overwrite" if i == 0 else "append"
+                    df.to_parquet(temp_path, index=False, engine="fastparquet", compression="snappy", append=(mode == "append"))
+                    logger.info(f"✅ Written to temp file (mode={mode}): {len(df)} rows")
+
+                except Exception as e:
+                    logger.error(f"❌ Failed to read or write blob '{blob.name}': {e}")
+                    raise RuntimeError(f"Failed to process Parquet shard: {blob.name}") from e
+
+            # Upload temp file to GCS
+            logger.info(f"⬆️ Uploading final merged file to: gs://{bucket}/{destination}")
+            merged_blob = client.bucket(bucket).blob(destination)
+            with open(temp_path, "rb") as f:
+                merged_blob.upload_from_file(f, content_type="application/octet-stream")
+
+            logger.info("✅ Merged Parquet file uploaded successfully.")
+
+    except Exception as e:
+        logger.error(f"❌ Failed to merge Parquet shards: {e}", exc_info=True)
+        raise
+
+    finally:
+        # Always attempt cleanup
+        if 'temp_path' in locals() and os.path.exists(temp_path):
+            os.remove(temp_path)
+            logger.info(f"🧹 Temporary file cleaned up: {temp_path}")
 
 
-def validate_csv(filepath: str):
+def validate_parquet(filepath: str):
     logger = logging.getLogger("airflow.task")
     logger.info(f"Starting validation for file: {filepath}")
 
     try:
-        df = pd.read_csv(filepath)
-        logger.info(f"Loaded CSV with shape: {df.shape}")
+        df = pd.read_parquet(filepath)
+        logger.info(f"Loaded Parquet with shape: {df.shape}")
 
         expected_columns = ["movie_id", "title", "genres", "keywords", "overview"]
         actual_columns = list(df.columns)
 
-        # 1. Column name validation
         if actual_columns != expected_columns:
             raise ValueError(
                 f"Schema mismatch! Expected: {expected_columns}, Got: {actual_columns}"
             )
         logger.info("Column names validation passed")
 
-        # 2. Data type validation
         if not pd.api.types.is_integer_dtype(df["movie_id"]):
             raise ValueError("Column 'movie_id' must be of type INTEGER")
         for col in ["title", "genres", "keywords", "overview"]:
@@ -123,19 +156,16 @@ def validate_csv(filepath: str):
                 raise ValueError(f"Column '{col}' must be of type STRING")
         logger.info("Data type validation passed")
 
-        # 3. Null check
         if df.isnull().any().any():
             null_report = df.isnull().sum()
             raise ValueError(f"Null values found:\n{null_report}")
         logger.info("Null value check passed")
 
-        # 4. Duplicate check on movie_id
         if df.duplicated(subset=["movie_id"]).any():
             duplicates = df[df.duplicated(subset=["movie_id"], keep=False)]
             raise ValueError(f"Duplicate movie_id found:\n{duplicates}")
         logger.info("Duplicate ID check passed")
 
-        # 5. Text length check
         text_columns = ["title", "overview"]
         for col in text_columns:
             blank_rows = df[col].astype(str).str.strip() == ""
@@ -145,7 +175,6 @@ def validate_csv(filepath: str):
                 )
         logger.info("Text length check passed")
 
-        # 6. Corrupt character check
         corrupted_char = "�"
         corrupted_found = df.apply(
             lambda col: col.astype(str).str.contains(corrupted_char)

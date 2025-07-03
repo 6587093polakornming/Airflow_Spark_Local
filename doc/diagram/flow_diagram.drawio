@@ -86,13 +86,13 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="5OKmxcMu6-beXj354qPA-71" value="&lt;b&gt;Ingestion Phase&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="74" y="40" width="240" height="60" as="geometry" />
+          <mxGeometry x="60" y="40" width="254" height="60" as="geometry" />
         </mxCell>
         <mxCell id="5OKmxcMu6-beXj354qPA-72" value="&lt;b&gt;Data Prcessing Phase&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="314" y="40" width="230" height="60" as="geometry" />
         </mxCell>
         <mxCell id="5OKmxcMu6-beXj354qPA-73" value="&lt;b&gt;Data Load Phase&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="544" y="40" width="216" height="60" as="geometry" />
+          <mxGeometry x="544" y="40" width="226" height="60" as="geometry" />
         </mxCell>
         <mxCell id="PiRBTrWFmI5AwXph0IvP-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="PiRBTrWFmI5AwXph0IvP-2" target="5OKmxcMu6-beXj354qPA-22" edge="1">
           <mxGeometry relative="1" as="geometry">
