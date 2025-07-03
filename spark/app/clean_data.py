@@ -12,6 +12,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+### TODO OUTPUT change CSV file to Parquet
 READ_DIR_PATH = "/opt/bitnami/spark/resources/dataset/"
 FLIE_NAME = "TMDB_movie_dataset_v11.csv"
 ISOFILE_NAME = "iso_countries_cleaned.csv"
@@ -33,6 +34,9 @@ if __name__ == "__main__":
         spark = SparkSession.builder \
             .appName("Spark_Cleansing") \
             .master("spark://spark-master:7077") \
+            .config("spark.sql.legacy.parquet.datetimeRebaseModeInWrite", "LEGACY") \
+            .config("spark.sql.legacy.parquet.datetimeRebaseModeInRead", "LEGACY") \
+            .config("spark.sql.parquet.int96RebaseModeInWrite", "LEGACY") \
             .getOrCreate()
 
         logger.info("Spark Session created")
@@ -119,12 +123,10 @@ if __name__ == "__main__":
         cleaned_count = df_cleaned.count()
         logger.info(f"Total cleaned records: {cleaned_count}")
 
-        # Save to Local Storage
+        # Save to Local Storage as Parquet
         df_cleaned.coalesce(1).write \
-            .option("header", True) \
-            .option("quoteAll", True) \
             .mode("overwrite") \
-            .csv(OUTPUT_PATH)
+            .parquet(OUTPUT_PATH)
         
         logger.info(f"Final cleaned data saved to: {OUTPUT_PATH}")
 

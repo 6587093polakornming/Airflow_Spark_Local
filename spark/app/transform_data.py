@@ -28,8 +28,9 @@ if __name__ == "__main__":
     try:
         logger.info("Starting data transformation process")
         
+        # TODO Change input csv to parquet
         # Load data with caching for reuse
-        df = spark.read.option("header", True).option("inferSchema", True).csv(CLEAN_DATA_PATH).cache()
+        df = spark.read.parquet(CLEAN_DATA_PATH).cache()
         record_count = df.count()
         logger.info(f"Loaded data with {record_count:,} records")
         

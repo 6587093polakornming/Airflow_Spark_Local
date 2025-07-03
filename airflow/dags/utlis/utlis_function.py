@@ -3,17 +3,10 @@ import io
 from glob import glob
 import logging
 import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
 from tempfile import NamedTemporaryFile
 from google.cloud import bigquery
-from airflow.operators.python import PythonOperator
 from airflow.exceptions import AirflowFailException
 from airflow.providers.google.common.hooks.base_google import GoogleBaseHook
-from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
-from airflow.providers.google.cloud.transfers.gcs_to_local import (
-    GCSToLocalFilesystemOperator,
-)
 from airflow.providers.google.cloud.hooks.gcs import GCSHook
 
 
@@ -82,7 +75,9 @@ def upload_parquet_folder_to_bq(
 
 def merge_gcs_parquet_shards(bucket: str, prefix: str, destination: str):
     logger = logging.getLogger("airflow.task")
-    logger.info(f"📦 Starting streaming merge of Parquet shards from GCS: bucket='{bucket}', prefix='{prefix}'")
+    logger.info(
+        f"Starting streaming merge of Parquet shards from GCS: bucket='{bucket}', prefix='{prefix}'"
+    )
 
     try:
         hook = GCSHook(gcp_conn_id="google_cloud_default")
@@ -90,46 +85,58 @@ def merge_gcs_parquet_shards(bucket: str, prefix: str, destination: str):
 
         blobs = list(client.list_blobs(bucket, prefix=prefix))
         if not blobs:
-            raise ValueError(f"🚫 No Parquet files found with prefix '{prefix}' in bucket '{bucket}'")
+            raise ValueError(
+                f"No Parquet files found with prefix '{prefix}' in bucket '{bucket}'"
+            )
 
         blobs_sorted = sorted(blobs, key=lambda b: b.name)
-        logger.info(f"📄 Found {len(blobs_sorted)} Parquet shard(s) to merge")
+        logger.info(f"Found {len(blobs_sorted)} Parquet shard(s) to merge")
 
         with NamedTemporaryFile(suffix=".parquet", delete=False) as tmp_file:
             temp_path = tmp_file.name
-            logger.info(f"📁 Temporary file for merge: {temp_path}")
+            logger.info(f"Temporary file for merge: {temp_path}")
 
             for i, blob in enumerate(blobs_sorted):
                 try:
-                    logger.info(f"⬇️ Downloading and reading blob: {blob.name} ({blob.size} bytes)")
+                    logger.info(
+                        f"⬇️ Downloading and reading blob: {blob.name} ({blob.size} bytes)"
+                    )
                     byte_data = blob.download_as_bytes()
                     df = pd.read_parquet(io.BytesIO(byte_data), engine="fastparquet")
 
                     mode = "overwrite" if i == 0 else "append"
-                    df.to_parquet(temp_path, index=False, engine="fastparquet", compression="snappy", append=(mode == "append"))
-                    logger.info(f"✅ Written to temp file (mode={mode}): {len(df)} rows")
+                    df.to_parquet(
+                        temp_path,
+                        index=False,
+                        engine="fastparquet",
+                        compression="snappy",
+                        append=(mode == "append"),
+                    )
+                    logger.info(f"Written to temp file (mode={mode}): {len(df)} rows")
 
                 except Exception as e:
-                    logger.error(f"❌ Failed to read or write blob '{blob.name}': {e}")
-                    raise RuntimeError(f"Failed to process Parquet shard: {blob.name}") from e
+                    logger.error(f"Failed to read or write blob '{blob.name}': {e}")
+                    raise RuntimeError(
+                        f"Failed to process Parquet shard: {blob.name}"
+                    ) from e
 
             # Upload temp file to GCS
-            logger.info(f"⬆️ Uploading final merged file to: gs://{bucket}/{destination}")
+            logger.info(f"Uploading final merged file to: gs://{bucket}/{destination}")
             merged_blob = client.bucket(bucket).blob(destination)
             with open(temp_path, "rb") as f:
                 merged_blob.upload_from_file(f, content_type="application/octet-stream")
 
-            logger.info("✅ Merged Parquet file uploaded successfully.")
+            logger.info("Merged Parquet file uploaded successfully.")
 
     except Exception as e:
-        logger.error(f"❌ Failed to merge Parquet shards: {e}", exc_info=True)
+        logger.error(f"Failed to merge Parquet shards: {e}", exc_info=True)
         raise
 
     finally:
         # Always attempt cleanup
-        if 'temp_path' in locals() and os.path.exists(temp_path):
+        if "temp_path" in locals() and os.path.exists(temp_path):
             os.remove(temp_path)
-            logger.info(f"🧹 Temporary file cleaned up: {temp_path}")
+            logger.info(f"Temporary file cleaned up: {temp_path}")
 
 
 def validate_parquet(filepath: str):

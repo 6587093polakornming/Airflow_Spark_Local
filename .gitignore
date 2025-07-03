@@ -29,3 +29,4 @@ eda/cleaned_data.csv
 /spark/tmp
 **/__init__.py
 spark/app/utlis/__init___.py
+eda/movie_enriched_view.csv

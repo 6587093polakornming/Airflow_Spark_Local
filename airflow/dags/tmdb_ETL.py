@@ -31,10 +31,8 @@ import os
 from datetime import timedelta
 from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
-from airflow.providers.google.common.hooks.base_google import GoogleBaseHook
 from airflow.utils.dates import days_ago
 from airflow.operators.python import PythonOperator
-from airflow.exceptions import AirflowFailException
 from airflow.utils.task_group import TaskGroup
 from utlis.utlis_function import check_file_exists, upload_parquet_folder_to_bq
 from airflow.providers.google.cloud.sensors.bigquery import BigQueryTableExistenceSensor
@@ -102,6 +100,7 @@ with DAG(
         task_id="check_dataset_exists", python_callable=check_file_exists
     )
 
+    ### TODO change CSV file to Parquet
     cleasing_data_task = SparkSubmitOperator(
         task_id="cleansing_data",
         application="/opt/bitnami/spark/app/clean_data.py",
@@ -110,6 +109,7 @@ with DAG(
         conf={"spark.master": spark_master},
     )
 
+    ### TODO change CSV file to Parquet
     transform_data_task = SparkSubmitOperator(
         task_id="transform_data",
         application="/opt/bitnami/spark/app/transform_data.py",

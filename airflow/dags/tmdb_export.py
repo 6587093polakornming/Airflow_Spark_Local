@@ -48,7 +48,6 @@ default_args = {
 }
 
 
-### TODO Update This DAGS
 BUCKET_URI = "gs://tmdb-reco-flow-bucket"
 OUTPUT_FILENAME = "cbf_movie"
 PROJECT_ID = "datapipeline467803"
