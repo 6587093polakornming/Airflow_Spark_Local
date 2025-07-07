@@ -1,32 +1,41 @@
-### TODO DAGs Doc
-# 📝 DAG Documentation
+# DAG Documentation
 """
-## 📝 DAG Documentation - ETL_tmdb_dataset
-**ETL pipeline for cleansing and transforming TMDB dataset**
+## 📝 DAG Documentation - Export_Recom_Dataset_from_GCP
 
-⚙️
-Default Arguments
-&ensp;&ensp;
-🧑‍💻 **Owner**: &ensp; `Polakorn Anantapakorn` &emsp; | &emsp; 🕒 **Schedule**: &ensp; `None` &emsp; | &emsp; 🗓️ **Start Date**: &ensp; `days_ago(1)` &emsp; | &emsp;
-####
-📋 Pipeline Info
--
-📌
-**Source**: &ensp; `TMDB Dataset (v11)`
--
-🗂️
-**Source Data**: &ensp; `/opt/bitnami/spark/resources/dataset/TMDB_movie_dataset_v11.csv`
--
-📦
-**Destination**: &ensp; `/opt/shared/output/`
--
-🔗
-**Github Link**: &ensp; [ETL_tmdb_dataset](https://github.com/your-org/tmdb-etl-project)
-####
-📞 Contact
-&ensp;&ensp;
-📧 **Requestor Team**: &ensp; `Data Engineering` &emsp; | &emsp; 👥 **Source Team**: &ensp; `TMDB API` &emsp; | &emsp; 🧑‍💻 **Users Team**: &ensp; `ML/Analytics`
+### Export pipeline for generating and validating content-based recommendation dataset
+
+This DAG exports a materialized view (`cbf_movie_recommendations_view`) from BigQuery into Google Cloud Storage (GCS) in Parquet format. It then merges the exported shards into a single Parquet file, downloads the final file to the Airflow local volume, and validates the file structure for downstream use in machine learning and analytics.
+
+⚙️  
+Default Arguments  
+&ensp;&ensp;  
+🧑‍💻 **Owner**: &ensp; `Polakorn Anantapakorn` &emsp; | &emsp; 🕒 **Schedule**: &ensp; `None` &emsp; | &emsp; 🗓️ **Start Date**: &ensp; `days_ago(1)`  
+
+####  
+📋 Pipeline Info  
+-  
+📌 **Source View**: &ensp; `cbf_movie_recommendations_view`  
+🗃️ **BigQuery Table**: &ensp; `datapipeline467803.tmdb_dw.cbf_movie_recommendations_view`  
+📤 **Export Target (GCS)**: &ensp; `gs://tmdb-reco-flow-bucket/output/cbf_movie_*.parquet`  
+📦 **Final Output Path**: &ensp; `gs://tmdb-reco-flow-bucket/final/cbf_movie.parquet`  
+📥 **Local Output File**: &ensp; `/opt/airflow/data/cbf_movie.parquet`  
+🔗 **GitHub Link**: &ensp; [Export DAG on GitHub](https://github.com/6587093polakornming/TMDB_RecoFlow.git)
+
+---
+
+🛠️ **Main Components**
+- ✅ Export BigQuery view as Parquet shards
+- ✅ Merge shards into a single GCS Parquet file
+- ✅ Download file to Airflow container
+- ✅ Validate structure and schema for downstream use
+
+---
+
+📞 Contact  
+&ensp;&ensp;  
+📧 **Requestor Team**: &ensp; `My Supervisor - Data Engineer` &emsp; | &emsp; 👥 **Source Team**: &ensp; `N/A` &emsp; | &emsp; 🧑‍💻 **Users Team**: &ensp; `Data Scientist`  
 """
+
 
 from airflow import DAG
 from utlis.utlis_function import merge_gcs_parquet_shards, validate_parquet

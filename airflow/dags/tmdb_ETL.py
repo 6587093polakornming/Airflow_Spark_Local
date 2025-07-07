@@ -1,31 +1,43 @@
-# 📝 DAG Documentation
+# DAG Documentation
 """
 ## 📝 DAG Documentation - ETL_tmdb_dataset
-**ETL pipeline for cleansing and transforming TMDB dataset**
 
-⚙️
-Default Arguments
-&ensp;&ensp;
-🧑‍💻 **Owner**: &ensp; `Polakorn Anantapakorn` &emsp; | &emsp; 🕒 **Schedule**: &ensp; `None` &emsp; | &emsp; 🗓️ **Start Date**: &ensp; `days_ago(1)` &emsp; | &emsp;
-####
-📋 Pipeline Info
--
-📌
-**Source**: &ensp; `TMDB Dataset (v11)`
--
-🗂️
-**Source Data**: &ensp; `/opt/bitnami/spark/resources/dataset/TMDB_movie_dataset_v11.csv`
--
-📦
-**Destination**: &ensp; `/opt/shared/output/`
--
-🔗
-**Github Link**: &ensp; [ETL_tmdb_dataset](https://github.com/your-org/tmdb-etl-project)
-####
-📞 Contact
-&ensp;&ensp;
-📧 **Requestor Team**: &ensp; `Data Engineering` &emsp; | &emsp; 👥 **Source Team**: &ensp; `TMDB API` &emsp; | &emsp; 🧑‍💻 **Users Team**: &ensp; `ML/Analytics`
+### ETL pipeline for cleansing, transforming, and loading TMDB movie data to BigQuery
+
+This DAG automates the end-to-end data engineering workflow for the TMDB dataset.
+The process starts by checking dataset availability, then executes Spark jobs to clean and transform raw CSV data.
+Cleaned data is written in Parquet format, structured into dimension, bridge, and fact tables. The resulting data
+is then uploaded to BigQuery and validated for data integrity.
+
+⚙️  
+Default Arguments  
+&ensp;&ensp;  
+🧑‍💻 **Owner**: &ensp; `Polakorn Anantapakorn` &emsp; | &emsp; 🕒 **Schedule**: &ensp; `None` &emsp; | &emsp; 🗓️ **Start Date**: &ensp; `days_ago(1)`  
+
+####  
+📋 Pipeline Info  
+-  
+📌 **Source**: &ensp; [`TMDB Dataset (v11)`](https://www.kaggle.com/code/asaniczka/tmdb-movies-daily-updates)  
+🗂️ **Source Data**: &ensp; `/opt/bitnami/spark/resources/dataset/TMDB_movie_dataset_v11.csv`  
+📦 **Destination**: &ensp; `/opt/shared/output/` (cleaned and transformed Parquet files)  
+🎯 **Load Target**: &ensp; BigQuery project: `datapipeline467803`, dataset: `tmdb_dw`  
+🔗 **GitHub Link**: &ensp; [ETL_tmdb_dataset DAG](https://github.com/6587093polakornming/TMDB_RecoFlow.git)  
+
+---
+
+🛠️ **Main Components**
+- ✅ File check with PythonOperator
+- ✅ Spark jobs for cleaning and transforming movie data
+- ✅ PythonOperator for uploading each Parquet folder to BigQuery
+- ✅ BigQuery validation (existence, row count, sample schema)
+
+---
+
+📞 Contact  
+&ensp;&ensp;  
+📧 **Requestor Team**: &ensp; `My Supervisor - Data Engineer` &emsp; | &emsp; 👥 **Source Team**: &ensp; `N/A` &emsp; | &emsp; 🧑‍💻 **Users Team**: &ensp; `Data Scientist`  
 """
+
 
 import os
 from datetime import timedelta
