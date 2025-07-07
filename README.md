@@ -115,14 +115,26 @@ Ensure your GCP credentials and environment variables (e.g., project ID, bucket 
 ---
 
 ## Airflow Connection
+Airflow uses the following external service connections:
 
-Airflow uses SparkSubmitOperator with this connection string:
+### 🧠 Spark Connection
+- Airflow uses `SparkSubmitOperator` to submit Spark jobs.
+- Connection string:
+  ```bash
+  spark://spark-master:7077
+  ```
+- This is defined as `spark_default` in `docker-compose.yml`.
 
-```bash
-spark://spark-master:7077
-```
-
-This is defined in `docker-compose.yml`.
+### ☁️ Google Cloud Connection
+- Airflow interacts with BigQuery and GCS using the connection ID:
+  ```bash
+  google_cloud_default
+  ```
+- This connection must be configured in the Airflow UI or via environment variables.
+- The service account must have permission to:
+  - Access BigQuery project: `YOUR-GCP-PROJECT-ID`
+  - Read/write from GCS bucket: `YOUR-GCS-BUCKET-NAME`
+- Ensure the service account key is available in your container and properly mounted..
 
 ---
 
