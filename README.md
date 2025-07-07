@@ -5,34 +5,34 @@
 
 ---
 
-## 📘 Description
+## Description
 
-TMDB Recommendation Flow is a modern data pipeline project designed to automate and streamline movie recommendation dataset generation using **Apache Airflow**, **Apache Spark**, and **Big Query Google Cloud Platform (GCP)**. It processes TMDB movie data through several ETL stages—cleansing, transformation, export, and modeling—providing ready-to-use data for recommendation systems.
+TMDB Recommendation Flow is a modern data pipeline project designed to automate and streamline movie recommendation dataset generation using **Apache Airflow**, **Apache Spark**, and **Google Cloud Platform (BigQuery)**. The pipeline processes TMDB movie data through several ETL stages—cleansing, transformation, exporting, and modeling—to produce ready-to-use data for recommendation systems.
 
 ---
 
-## 📊 Project Overview
+## Project Overview
 
 The pipeline is orchestrated using **Airflow DAGs**, processes data using **Apache Spark**, and stores it in **BigQuery**. Output can be used for content-based or collaborative filtering movie recommendation systems.
 
 ---
 
-## 📂 Table of Contents
+## Table of Contents
 
-- [Project Overview](#-project-overview)
-- [Project Structure](#-project-structure)
-- [Tools & Versions](#-tools--versions)
-- [Architecture Overview](#-architecture-overview)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [Airflow Connection](#-airflow-connection)
-- [Credits & Use Case](#-credits--use-case)
-- [Python Dependencies](#-python-dependencies)
-- [License](#-license)
+- [Project Overview](#project-overview)
+- [Project Structure](#project-structure)
+- [Architecture Overview](#architecture-overview)
+- [Tools & Versions](#tools--versions)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Airflow Connection](#airflow-connection)
+- [Credits & Use Case](#credits--use-case)
+- [Python Dependencies](#python-dependencies)
+- [License](#license)
 
 ---
 
-## 🧩 Project Structure
+## Project Structure
 
 ```
 TMDB_RecoFlow/
@@ -53,20 +53,25 @@ TMDB_RecoFlow/
 
 ---
 
-## 🛠 Tools & Versions
+## Tools & Versions
 
-- **Apache Airflow** 2.10.5 (via provider: `apache-airflow-providers-apache-spark==4.3.0`)
-- **Apache Spark** 3.5.2
-- **Python** 3.12
-- **Hadoop** 3.0
-- **Docker Compose** (multi-service orchestration)
-- **Google Cloud Platform (GCP)**:
-  - **BigQuery**
-  - **Google Cloud Storage (GCS)**
+- ![Airflow](https://img.shields.io/badge/Airflow-2.10.5-blue?logo=apache-airflow&logoColor=white)  
+  via provider: `apache-airflow-providers-apache-spark==4.3.0`
+
+- ![Spark](https://img.shields.io/badge/Apache_Spark-3.5.2-FD7F20?logo=apache-spark&logoColor=white)
+
+- ![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white)
+
+- ![Hadoop](https://img.shields.io/badge/Hadoop-3.0-yellow?logo=apache-hadoop&logoColor=black)
+
+- ![Docker Compose](https://img.shields.io/badge/Docker--Compose-blue?logo=docker&logoColor=white)
+
+- ![BigQuery](https://img.shields.io/badge/BigQuery-GCP-blue?logo=google-cloud&logoColor=white)  
+  ![GCS](https://img.shields.io/badge/Cloud_Storage-GCP-blue?logo=google-cloud&logoColor=white)
 
 ---
 
-## 🔧 Installation
+## Installation
 
 ### Prerequisites
 - Docker & Docker Compose
@@ -90,7 +95,7 @@ Ensure your GCP credentials and environment variables (e.g., project ID, bucket 
 
 ---
 
-## 🚀 Usage
+## Usage
 
 1. **Airflow UI**:
    - Access at `http://localhost:8080`
@@ -109,7 +114,7 @@ Ensure your GCP credentials and environment variables (e.g., project ID, bucket 
 
 ---
 
-## 🔌 Airflow Connection
+## Airflow Connection
 
 Airflow uses SparkSubmitOperator with this connection string:
 
@@ -121,14 +126,14 @@ This is defined in `docker-compose.yml`.
 
 ---
 
-## 🧠 Credits & Use Case
+## Credits & Use Case
 
 - **Dataset**: [TMDB Movies Dataset - Daily Updates](https://www.kaggle.com/code/asaniczka/tmdb-movies-daily-updates)
 - **Use Case Reference**: [Recommendation System by moridata](https://www.kaggle.com/code/moridata/recommendation-system-movie-recommendation)
 
 ---
 
-## 📦 Python Dependencies
+## Python Dependencies
 
 Install locally (if needed outside Docker):
 
@@ -143,6 +148,6 @@ pip install --no-cache-dir \
 
 ---
 
-## 📝 License
+## License
 
 This project is licensed under the **MIT License**. See the `LICENSE` file for more details.
