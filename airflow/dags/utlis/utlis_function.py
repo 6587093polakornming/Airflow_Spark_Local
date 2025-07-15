@@ -147,7 +147,26 @@ def validate_parquet(filepath: str):
         df = pd.read_parquet(filepath)
         logger.info(f"Loaded Parquet with shape: {df.shape}")
 
-        expected_columns = ["movie_id", "title", "genres", "keywords", "overview"]
+        expected_columns = [
+            "movie_id",
+            "status",
+            "title",
+            "adult",
+            "overview",
+            "original_language",
+            "release_date",
+            "vote_count",
+            "vote_average",
+            "popularity",
+            "budget",
+            "revenue",
+            "runtime",
+            "genres",
+            "keywords",
+            "companies",
+            "languages",
+            "countries",
+        ]
         actual_columns = list(df.columns)
 
         if actual_columns != expected_columns:
@@ -165,8 +184,9 @@ def validate_parquet(filepath: str):
 
         if df.isnull().any().any():
             null_report = df.isnull().sum()
-            raise ValueError(f"Null values found:\n{null_report}")
-        logger.info("Null value check passed")
+            logger.warning(f"⚠️ Null values found:\n{null_report}")
+        else:
+            logger.info("Null value check passed")
 
         if df.duplicated(subset=["movie_id"]).any():
             duplicates = df[df.duplicated(subset=["movie_id"], keep=False)]

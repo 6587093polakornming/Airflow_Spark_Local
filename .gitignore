@@ -30,3 +30,8 @@ eda/cleaned_data.csv
 **/__init__.py
 spark/app/utlis/__init___.py
 eda/movie_enriched_view.csv
+eda/eda_movie_metadata.ipynb
+eda/Synthetic_User_Ratings.csv
+eda/user_ratings.csv
+/airflow/data/cbf_movie_recommendations_view
+eda/movie_enriched_view.parquet

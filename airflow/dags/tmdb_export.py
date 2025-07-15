@@ -61,7 +61,7 @@ BUCKET_URI = "gs://tmdb-reco-flow-bucket"
 OUTPUT_FILENAME = "cbf_movie"
 PROJECT_ID = "datapipeline467803"
 DATASET_ID = "tmdb_dw"
-TABLE_NAME = "cbf_movie_recommendations_view"
+TABLE_NAME = "movie_enriched_view"
 
 
 with DAG(
