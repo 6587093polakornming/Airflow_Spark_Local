@@ -35,3 +35,4 @@ eda/Synthetic_User_Ratings.csv
 eda/user_ratings.csv
 /airflow/data/cbf_movie_recommendations_view
 eda/movie_enriched_view.parquet
+airflow/data/cbf_movie.parquet
