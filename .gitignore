@@ -36,3 +36,10 @@ eda/user_ratings.csv
 /airflow/data/cbf_movie_recommendations_view
 eda/movie_enriched_view.parquet
 airflow/data/cbf_movie.parquet
+eda/user_ratings_100users.csv
+eda/user_ratings_16-07-68.csv
+eda/user_ratings_200users_30each.csv
+eda/user_ratings_200users_25each.csv
+model/user_ratings_200users_30each.csv
+model/user_ratings_200users_30each_cleaned.csv
+model/movie_enriched_view.csv
