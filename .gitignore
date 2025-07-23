@@ -43,3 +43,11 @@ eda/user_ratings_200users_25each.csv
 model/user_ratings_200users_30each.csv
 model/user_ratings_200users_30each_cleaned.csv
 model/movie_enriched_view.csv
+eda/user_ratings_200users_30each.parquet
+key.json
+model/Dataset/final_cbf_movie.parquet
+model/BERT-FAISS/movie_embeddings.npy
+model/Dataset/user_last_genres.csv
+/model/Dataset
+model/lightFM/evaluation_hybrid_lightfm_17-07-68.xlsx
+model/BERT-FAISS/movie_embeddings.zip
