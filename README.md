@@ -20,6 +20,7 @@ The pipeline is orchestrated using **Airflow DAGs**, processes data using **Apac
 ## Table of Contents
 
 - [Project Overview](#project-overview)
+- [Dataset](#dataset)
 - [Project Structure](#project-structure)
 - [Architecture Overview](#architecture-overview)
 - [Tools & Versions](#tools--versions)
@@ -29,6 +30,65 @@ The pipeline is orchestrated using **Airflow DAGs**, processes data using **Apac
 - [Credits & Use Case](#credits--use-case)
 - [Python Dependencies](#python-dependencies)
 - [License](#license)
+
+---
+
+## Dataset
+
+### Full TMDB Movies Dataset 2024 (1M Movies)
+
+This project utilizes the comprehensive **Full TMDB Movies Dataset 2024** containing over 1 million movies from The Movie Database (TMDB). The dataset provides rich metadata essential for building robust recommendation systems and is updated daily.
+
+**Dataset Source**: [Full TMDB Movies Dataset 2024 (1M Movies)](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies)
+
+#### Dataset Features
+
+The dataset includes the following key attributes:
+
+- **Basic Movie Information**:
+  - Movie ID, Title, Original Title
+  - Release Date, Runtime
+  - Status (Released, Rumored, etc.)
+  - Homepage URL
+
+- **Content Metadata**:
+  - Overview/Plot Summary
+  - Genres (Action, Comedy, Drama, etc.)
+  - Keywords and Tags
+  - Original Language
+  - Adult Content Flag
+
+- **Production Details**:
+  - Production Companies
+  - Production Countries
+  - Budget and Revenue Information
+  - Spoken Languages
+
+- **Popularity & Ratings**:
+  - TMDB Popularity Score
+  - Vote Average (User Ratings)
+  - Vote Count
+  - Poster and Backdrop Image Paths
+
+#### Dataset Statistics
+
+- **Total Movies**: 1,000,000+
+- **Time Range**: Movies from early cinema to 2024
+- **Update Frequency**: Daily updates
+- **Languages**: Multiple languages with English predominant
+- **File Format**: CSV
+- **File Size**: Approximately 600MB+ compressed
+
+#### Data Quality & Preprocessing
+
+The dataset requires preprocessing for recommendation systems:
+
+- **Missing Values**: Some movies may have incomplete metadata
+- **Data Types**: Mixed data types requiring transformation
+- **Normalization**: Popularity scores and ratings need scaling
+- **Feature Engineering**: Genre encoding, keyword extraction, and text processing
+
+This comprehensive dataset enables both **content-based filtering** (using genres, keywords, overview) and **collaborative filtering** (using user ratings and popularity metrics) approaches for movie recommendations.
 
 ---
 
@@ -140,8 +200,15 @@ Airflow uses the following external service connections:
 
 ## Credits & Use Case
 
-- **Dataset**: [TMDB Movies Dataset - Daily Updates](https://www.kaggle.com/code/asaniczka/tmdb-movies-daily-updates)
-- **Use Case Reference**: [Recommendation System by moridata](https://www.kaggle.com/code/moridata/recommendation-system-movie-recommendation)
+### Dataset
+- **Primary Dataset**: [Full TMDB Movies Dataset 2024 (1M Movies)](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies) by asaniczka
+- **Alternative Reference**: [TMDB Movies Dataset - Daily Updates](https://www.kaggle.com/code/asaniczka/tmdb-movies-daily-updates)
+
+### Implementation Reference
+- **Recommendation System Approach**: [Recommendation System by moridata](https://www.kaggle.com/code/moridata/recommendation-system-movie-recommendation)
+
+### Acknowledgments
+Special thanks to the TMDB community and Kaggle contributors for maintaining and sharing this comprehensive movie dataset that enables advanced recommendation system development.
 
 ---
 
@@ -162,4 +229,4 @@ pip install --no-cache-dir \
 
 ## License
 
-This project is licensed under the **MIT License**. See the `LICENSE` file for more details.
+This project is licensed under the **Apache License**. See the `LICENSE` file for more details.
