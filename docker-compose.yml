@@ -45,7 +45,7 @@ services:
       interval: 10s
       retries: 5
       start_period: 5s
-    restart: always
+    restart: unless-stopped
     ports:
       - 5432:5432
 
@@ -61,7 +61,7 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
-    restart: always
+    restart: unless-stopped
     depends_on:
       <<: *airflow-common-depends-on
       airflow-init:
@@ -76,7 +76,7 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
-    restart: always
+    restart: unless-stopped
     depends_on:
       <<: *airflow-common-depends-on
       airflow-init:
@@ -189,7 +189,7 @@ services:
       - ./tests:/opt/bitnami/spark/tests
     networks:
       - default_network
-    restart: always
+    restart: unless-stopped
 
   spark-worker-1:
     container_name: spark-worker-1
@@ -208,7 +208,7 @@ services:
       - ${SPARK_PROJ_DIR:-spark}/output:/opt/shared/output
     networks:
       - default_network
-    restart: always
+    restart: unless-stopped
 
   jupyterlab:
     build:
@@ -230,6 +230,7 @@ services:
       - ${SPARK_PROJ_DIR:-spark}/resources:/opt/bitnami/spark/resources
     networks:
       - default_network
+    restart: unless-stopped
     command: start.sh jupyter lab --NotebookApp.allow_origin='*' --NotebookApp.token='' --NotebookApp.disable_check_xsrf=True --NotebookApp.allow_root=True
     depends_on:
       - spark-master
